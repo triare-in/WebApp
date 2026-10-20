@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/*
+ * Triare design tokens — derived from Design/DESIGN.md §2.
+ * Single source of truth for the store and the coding agent.
+ * Never use raw hex in components; use bg-background, text-muted-foreground, etc.
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-soft: var(--destructive-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-sakura: var(--sakura);
+
+  --color-shadow-xs: var(--shadow-xs);
+  --color-shadow-sm: var(--shadow-sm);
+  --color-shadow-lg: var(--shadow-lg);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #FAF8FD;
+  --foreground: #2A2233;
+  --card: #FFFFFF;
+  --card-foreground: #2A2233;
+  --popover: #FFFFFF;
+  --popover-foreground: #2A2233;
+  --primary: #6B4FBB;
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #5B41A5;
+  --secondary: #EFE9FA;
+  --secondary-foreground: #3F2F73;
+  --muted: #F1EDF8;
+  --muted-foreground: #675E75;
+  --accent: #EDE6F9;
+  --accent-foreground: #3F2F73;
+  --border: #E4DDF0;
+  --input: #D6CCE6;
+  --ring: #8466D1;
+  --destructive: #B3263E;
+  --destructive-soft: #FBE9EC;
+  --success: #2F7D5B;
+  --success-soft: #E6F4EC;
+  --warning: #8A5A00;
+  --warning-soft: #FFF3D6;
+  --info: #3A62B8;
+  --info-soft: #E7EEFB;
+  --sakura: #F4C9DA;
+
+  --shadow-xs: 0 1px 2px rgb(60 40 110 / 0.06);
+  --shadow-sm: 0 2px 8px rgb(60 40 110 / 0.08);
+  --shadow-lg: 0 12px 32px rgb(60 40 110 / 0.14);
+
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  color-scheme: light;
+}
+
+.dark {
+  --background: #17131F;
+  --foreground: #F1ECF8;
+  --card: #1F1A2A;
+  --card-foreground: #F1ECF8;
+  --popover: #1F1A2A;
+  --popover-foreground: #F1ECF8;
+  --primary: #A58BF0;
+  --primary-foreground: #17131F;
+  --primary-hover: #B7A2F5;
+  --secondary: #2B2340;
+  --secondary-foreground: #E4DBFA;
+  --muted: #272033;
+  --muted-foreground: #B3A9C4;
+  --accent: #322A47;
+  --accent-foreground: #E4DBFA;
+  --border: #332B45;
+  --input: #4A3F63;
+  --ring: #A58BF0;
+  --destructive: #F27A8D;
+  --destructive-soft: #3A1B25;
+  --success: #6CCB9D;
+  --success-soft: #173226;
+  --warning: #E8B04A;
+  --warning-soft: #3A2D12;
+  --info: #8FB0F0;
+  --info-soft: #1B2740;
+  --sakura: #5A3347;
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  /* tabular-nums on every price */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
