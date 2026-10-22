@@ -1,38 +1,25 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Keyboard, ChevronRight } from "lucide-react"
-import { useState, useEffect } from "react"
 
 export function FirmwarePage() {
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 500)
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
-      <div className="flex min-h-screen flex-col bg-background font-body">
+      <div className="flex flex-col bg-background font-body">
 
         <div className="flex-1">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="h-16 border-b flex items-center justify-between">
               <h1 className="font-display text-xl font-semibold">Firmware</h1>
-              <Button variant="ghost" size="sm" onClick={() => window.alert("Back to store")}>
-                Back
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/">Back to store</Link>
               </Button>
             </div>
 
             <div className="space-y-8 pt-6">
-              {!loaded ? (
-                <Skeleton className="h-96 grid grid-cols-2 gap-4" />
-              ) : (
                 <div className="space-y-8">
                   {/* Getting Started */}
                   <Card className="overflow-hidden">
@@ -100,7 +87,7 @@ export function FirmwarePage() {
                     <CardContent className="p-6">
                       <h2 className="font-display text-2xl font-bold tracking-tight mb-4">Layers & remapping</h2>
                       <p className="text-muted-foreground mb-4">
-                        Remap any key, any layer, no software to install. Use ZMK's JSON keymap format.
+                        Keymaps use ZMK's devicetree-based .keymap format. Live editing is available only on builds configured for ZMK Studio; other changes need a firmware build and flash.
                       </p>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -176,7 +163,6 @@ export function FirmwarePage() {
                     </CardContent>
                   </Card>
                 </div>
-              )}
             </div>
           </div>
         </div>

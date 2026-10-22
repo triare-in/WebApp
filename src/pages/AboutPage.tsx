@@ -1,9 +1,6 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Grid } from "@/components/ui/grid"
 import {
   Shield,
   Zap,
@@ -14,6 +11,7 @@ import {
   ClipboardCheck,
   Check,
 } from "lucide-react"
+import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 
 export function AboutPage() {
   const brandStory = [
@@ -71,9 +69,7 @@ export function AboutPage() {
           </div>
           <div className="flex-1 lg:w-1/2 flex items-center justify-center">
             <div className="relative">
-              <svg viewBox="0 0 520 190" className="w-full rounded-2xl overflow-hidden bg-muted">
-                <rect x="3" y="3" width="514" height="184" rx="14" />
-              </svg>
+              <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full rounded-2xl bg-muted p-4" />
               <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-lg">
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />
                 2 · Case
@@ -86,65 +82,53 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* Brand story cards */}
+      {/* Brand story */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Grid className="grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-x-8 md:grid-cols-3">
           {brandStory.map((story, index) => (
-            <Card key={index} className="p-6">
-              <CardContent className="flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-lg ${story.bg} ${story.border} flex items-center justify-center shrink-0`}>
-                    <story.icon className="h-5 w-5" />
-                  </div>
-                  <span className="text-xs font-medium text-muted-foreground capitalize-first">{index + 1}</span>
-                </div>
-                <h3 className="font-display font-medium mb-2">{story.title}</h3>
-                <p className="text-muted-foreground flex-1 line-clamp-2">{story.description}</p>
-              </CardContent>
-            </Card>
+            <article key={story.title} className="border-t border-border py-5">
+              <div className="flex items-center gap-3">
+                <story.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
+              </div>
+              <h2 className="mt-4 font-display text-xl font-semibold">{story.title}</h2>
+              <p className="mt-2 leading-relaxed text-muted-foreground">{story.description}</p>
+            </article>
           ))}
-        </Grid>
+        </div>
       </section>
 
       {/* Principles */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <h2 className="font-display text-3xl font-bold tracking-tight mb-8">Our principles</h2>
-        <Grid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {principles.map((principle, index) => (
-            <Card key={index} className="p-4">
-              <CardContent>
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
-                    <principle.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-display font-medium mb-1">{principle.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {principle.description}
-                    </p>
-                  </div>
+        <div className="grid grid-cols-1 gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+          {principles.map((principle) => (
+            <article key={principle.title} className="border-t border-border py-5">
+              <div className="flex items-start gap-3">
+                <principle.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <div>
+                  <h3 className="font-display font-medium">{principle.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{principle.description}</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </article>
           ))}
-        </Grid>
+        </div>
       </section>
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="bg-secondary overflow-hidden">
-          <CardContent className="p-8 lg:p-16 text-center">
+        <div className="bg-secondary px-6 py-14 text-center sm:px-10 lg:py-20">
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               Your keyboard, minus the mystery.
             </h2>
             <p className="text-secondary-foreground text-lg mb-6 max-w-2xl mx-auto">
               Built to order, shipped from India, repairable for years.
             </p>
-            <Button variant="secondary" size="lg" asChild className="h-12 px-8">
+            <Button size="lg" asChild className="h-12 px-8">
               <Link to="/customize">Start a build</Link>
             </Button>
-          </CardContent>
-        </Card>
+        </div>
       </section>
     </div>
   )

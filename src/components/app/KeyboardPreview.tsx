@@ -1,33 +1,25 @@
-"use client"
 
 import { cn } from "@/lib/utils"
-import ansi65 from "../../../ansi-65.json"
-import ansi75 from "../../../ansi-75.json"
-import ansi100 from "../../../ansi-100.json"
+import { KEYBOARD_LAYOUTS, type Layout } from "@/lib/catalog"
 
 interface KeyboardPreviewProps {
-  layout: "65" | "75" | "100"
+  layout: Layout
   caseColor?: string
   keycapColor?: string
   className?: string
 }
 
-const layouts = {
-  "65": ansi65,
-  "75": ansi75,
-  "100": ansi100,
-} as const
-
 export function KeyboardPreview({ layout, caseColor = "#B9A6E8", keycapColor = "#F3EEE3", className }: KeyboardPreviewProps) {
-  const keyboard = layouts[layout]
+  const keyboard = KEYBOARD_LAYOUTS[layout]
   const unit = 32
   const gap = 2
-  const width = keyboard.width_u * unit
-  const height = keyboard.height_u * unit
+  const inset = 12
+  const width = keyboard.width_u * unit + inset * 2
+  const height = keyboard.height_u * unit + inset * 2
   const fillForRole: Record<string, string> = {
     alpha: keycapColor,
-    mod: "var(--modifier-key, #E8E1F2)",
-    accent: "var(--accent-key, #D5C8F2)",
+    mod: "var(--secondary)",
+    accent: "var(--primary)",
   }
 
   return (
@@ -49,8 +41,8 @@ export function KeyboardPreview({ layout, caseColor = "#B9A6E8", keycapColor = "
         strokeWidth="3"
       />
       {keyboard.keys.map((key) => {
-        const x = key.x * unit + gap / 2
-        const y = key.y * unit + gap / 2
+        const x = key.x * unit + inset + gap / 2
+        const y = key.y * unit + inset + gap / 2
         const keyWidth = key.w * unit - gap
         const keyHeight = key.h * unit - gap
         return (
@@ -70,7 +62,7 @@ export function KeyboardPreview({ layout, caseColor = "#B9A6E8", keycapColor = "
               <text
                 x={x + keyWidth / 2}
                 y={y + keyHeight / 2}
-                fill="#2A2233"
+                fill={key.role === "accent" ? "var(--primary-foreground)" : "var(--foreground)"}
                 fontSize={Math.min(10, keyWidth / 4)}
                 textAnchor="middle"
                 dominantBaseline="central"

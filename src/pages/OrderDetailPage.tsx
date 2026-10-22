@@ -1,6 +1,5 @@
-"use client"
 
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -20,7 +19,7 @@ export function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
 
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
 
       <div className="flex-1">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -127,7 +126,7 @@ export function OrderDetailPage() {
                 <CardContent>
                   <Badge variant="success" className="text-sm mb-2">Active until 12 Oct 2027</Badge>
                   <p className="text-sm text-muted-foreground">
-                    1-year warranty on this product. <a href="/support/claim" className="text-primary underline">Raise a claim</a> if needed.
+                    1-year warranty on this product. <Link to="/support/claim" className="text-primary underline">Raise a claim</Link> if needed.
                   </p>
                 </CardContent>
               </Card>

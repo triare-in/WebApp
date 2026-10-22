@@ -1,4 +1,3 @@
-"use client"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -22,7 +21,7 @@ export function AdminBuildQueuePage() {
 
       <div className="grid gap-4">
         {queue.map((item) => (
-          <Card key={item.id} className={item.priority === "Urgent" ? "border-orange-500/50" : ""}>
+          <Card key={item.id} className={item.priority === "Urgent" ? "border-warning/50" : ""}>
             <CardContent className="p-6">
               <div className="flex items-start gap-6">
                 <KeyboardPreview layout={item.layout as "65" | "75" | "100"} caseColor={item.caseColor} keycapColor={item.keycapColor} className="w-40 h-28" />

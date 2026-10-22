@@ -1,4 +1,3 @@
-"use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -6,13 +5,15 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 import { Search, Plus, Edit } from "lucide-react"
+import { formatPrice, getPresetPrice, KEYBOARD_PRESETS } from "@/lib/catalog"
 
-const products = [
-  { id: "P001", name: "75% Aluminium", layout: "75", price: "₹12,499", stock: 12, active: true },
-  { id: "P002", name: "65% Polycarbonate", layout: "65", price: "₹8,999", stock: 8, active: true },
-  { id: "P003", name: "100% Polycarbonate", layout: "100", price: "₹12,999", stock: 5, active: true },
-  { id: "P004", name: "75% Plastic", layout: "75", price: "₹9,499", stock: 0, active: false },
-]
+const products = KEYBOARD_PRESETS.map((preset, index) => ({
+  ...preset,
+  id: `P00${index + 1}`,
+  price: getPresetPrice(preset.layout, preset.case),
+  stock: [12, 8, 5][index] ?? 0,
+  active: true,
+}))
 
 export function AdminCatalogPage() {
   return (
@@ -39,7 +40,7 @@ export function AdminCatalogPage() {
           <div className="grid gap-4">
             {products.map((product) => (
               <div key={product.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
-                <KeyboardPreview layout={product.layout as "65" | "75" | "100"} className="w-32 h-24" />
+                <KeyboardPreview layout={product.layout} caseColor={product.caseColor} keycapColor={product.keycapColor} className="w-32 h-24" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium">{product.name}</h3>
@@ -48,7 +49,7 @@ export function AdminCatalogPage() {
                   <p className="text-sm text-muted-foreground mt-1">SKU: {product.id} · {product.layout}% layout</p>
                 </div>
                 <div className="text-right mr-4">
-                  <p className="font-medium">{product.price}</p>
+                  <p className="font-medium tabular-nums">{formatPrice(product.price)}</p>
                   <p className={`text-xs ${product.stock === 0 ? "text-destructive" : "text-muted-foreground"}`}>{product.stock} in stock</p>
                 </div>
                 <Button variant="ghost" size="icon">

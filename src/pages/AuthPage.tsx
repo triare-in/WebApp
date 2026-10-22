@@ -1,8 +1,7 @@
-"use client"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -12,13 +11,11 @@ export function AuthPage() {
   const [password, setPassword] = useState("")
 
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="font-display text-2xl font-bold">
-              <h1>{isLogin ? "Welcome back" : "Create your account"}</h1>
-            </CardTitle>
+            <h1 className="font-display text-2xl font-bold">{isLogin ? "Welcome back" : "Create your account"}</h1>
             <CardDescription className="text-muted-foreground">
               {isLogin ? "Sign in to your account" : "Start building your custom keyboard"}
             </CardDescription>

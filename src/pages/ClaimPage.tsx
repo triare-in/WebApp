@@ -1,4 +1,3 @@
-"use client"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -14,7 +13,7 @@ export function ClaimPage() {
   const [dragOver, setDragOver] = useState(false)
 
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
 
       <div className="flex-1">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -110,7 +109,7 @@ export function ClaimPage() {
                       <label className="relative flex cursor-pointer items-start gap-3 rounded-xl border border-border p-4 hover:border-primary transition-colors">
                         <input type="radio" name="preference" className="mt-0.5" defaultChecked />
                         <div>
-                          <h4 className="font-medium">Repair at Triare</h4>
+                          <h4 className="font-medium">Repair at Revara</h4>
                           <p className="text-sm text-muted-foreground">Send keyboard to us, we'll repair and ship back</p>
                         </div>
                       </label>

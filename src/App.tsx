@@ -1,10 +1,12 @@
+import { lazy, Suspense } from "react"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
-import { ThemeProvider } from "@/hooks/use-theme"
+import { ThemeProvider } from "next-themes"
 import { MainLayout } from "@/components/layout/MainLayout"
 import { AdminLayout } from "@/components/layout/AdminLayout"
-import './index.css'
+import { AppErrorBoundary } from "@/components/layout/AppErrorBoundary"
+import { RouteEffects } from "@/components/layout/RouteEffects"
 
 // Customer pages
 import { HomePage } from "@/pages/HomePage"
@@ -29,24 +31,25 @@ import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage"
 import { TermsPolicyPage } from "@/pages/TermsPolicyPage"
 import { NotFoundPage } from "@/pages/NotFoundPage"
 
-// Admin pages
-import { AdminDashboardPage } from "@/pages/admin/AdminDashboardPage"
-import { AdminOrdersPage } from "@/pages/admin/AdminOrdersPage"
-import { AdminOrderDetailPage } from "@/pages/admin/AdminOrderDetailPage"
-import { AdminBuildQueuePage } from "@/pages/admin/AdminBuildQueuePage"
-import { AdminCatalogPage } from "@/pages/admin/AdminCatalogPage"
-import { AdminDiscountsPage } from "@/pages/admin/AdminDiscountsPage"
-import { AdminReviewsPage } from "@/pages/admin/AdminReviewsPage"
-import { AdminClaimsPage } from "@/pages/admin/AdminClaimsPage"
-import { AdminCustomersPage } from "@/pages/admin/AdminCustomersPage"
-import { AdminSettingsPage } from "@/pages/admin/AdminSettingsPage"
+const AdminDashboardPage = lazy(() => import("@/pages/admin/AdminDashboardPage").then((module) => ({ default: module.AdminDashboardPage })))
+const AdminOrdersPage = lazy(() => import("@/pages/admin/AdminOrdersPage").then((module) => ({ default: module.AdminOrdersPage })))
+const AdminOrderDetailPage = lazy(() => import("@/pages/admin/AdminOrderDetailPage").then((module) => ({ default: module.AdminOrderDetailPage })))
+const AdminBuildQueuePage = lazy(() => import("@/pages/admin/AdminBuildQueuePage").then((module) => ({ default: module.AdminBuildQueuePage })))
+const AdminCatalogPage = lazy(() => import("@/pages/admin/AdminCatalogPage").then((module) => ({ default: module.AdminCatalogPage })))
+const AdminDiscountsPage = lazy(() => import("@/pages/admin/AdminDiscountsPage").then((module) => ({ default: module.AdminDiscountsPage })))
+const AdminReviewsPage = lazy(() => import("@/pages/admin/AdminReviewsPage").then((module) => ({ default: module.AdminReviewsPage })))
+const AdminClaimsPage = lazy(() => import("@/pages/admin/AdminClaimsPage").then((module) => ({ default: module.AdminClaimsPage })))
+const AdminCustomersPage = lazy(() => import("@/pages/admin/AdminCustomersPage").then((module) => ({ default: module.AdminCustomersPage })))
+const AdminSettingsPage = lazy(() => import("@/pages/admin/AdminSettingsPage").then((module) => ({ default: module.AdminSettingsPage })))
 
 export default function App() {
   return (
     <TooltipProvider>
-      <ThemeProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <BrowserRouter>
           <div className="min-h-screen bg-background font-body">
+            <RouteEffects />
+            <AppErrorBoundary>
             <Routes>
               {/* Public routes with main layout */}
               <Route element={<MainLayout />}>
@@ -71,25 +74,25 @@ export default function App() {
                 <Route path="/policies/warranty" element={<WarrantyPolicyPage />} />
                 <Route path="/policies/privacy" element={<PrivacyPolicyPage />} />
                 <Route path="/policies/terms" element={<TermsPolicyPage />} />
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
 
               {/* Admin routes with admin layout */}
               <Route element={<AdminLayout />}>
-                <Route path="/admin" element={<AdminDashboardPage />} />
-                <Route path="/admin/orders" element={<AdminOrdersPage />} />
-                <Route path="/admin/orders/:id" element={<AdminOrderDetailPage />} />
-                <Route path="/admin/build-queue" element={<AdminBuildQueuePage />} />
-                <Route path="/admin/catalog" element={<AdminCatalogPage />} />
-                <Route path="/admin/discounts" element={<AdminDiscountsPage />} />
-                <Route path="/admin/reviews" element={<AdminReviewsPage />} />
-                <Route path="/admin/claims" element={<AdminClaimsPage />} />
-                <Route path="/admin/customers" element={<AdminCustomersPage />} />
-                <Route path="/admin/settings" element={<AdminSettingsPage />} />
+                <Route path="/admin" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminDashboardPage /></Suspense>} />
+                <Route path="/admin/orders" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminOrdersPage /></Suspense>} />
+                <Route path="/admin/orders/:id" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminOrderDetailPage /></Suspense>} />
+                <Route path="/admin/build-queue" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminBuildQueuePage /></Suspense>} />
+                <Route path="/admin/catalog" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminCatalogPage /></Suspense>} />
+                <Route path="/admin/discounts" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminDiscountsPage /></Suspense>} />
+                <Route path="/admin/reviews" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminReviewsPage /></Suspense>} />
+                <Route path="/admin/claims" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminClaimsPage /></Suspense>} />
+                <Route path="/admin/customers" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminCustomersPage /></Suspense>} />
+                <Route path="/admin/settings" element={<Suspense fallback={<p role="status">Loading admin…</p>}><AdminSettingsPage /></Suspense>} />
               </Route>
 
-              {/* 404 */}
-              <Route path="*" element={<NotFoundPage />} />
             </Routes>
+            </AppErrorBoundary>
           </div>
           <Toaster position="bottom-right" richColors />
         </BrowserRouter>

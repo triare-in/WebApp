@@ -5,36 +5,21 @@ import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { isLayout, useCart } from "@/hooks/use-cart"
+import { useSavedDesigns } from "@/hooks/use-saved-designs"
+import { CASE_COLORS, DEFAULT_BATTERY_CAPACITY_MAH, formatPrice, getLayoutSpec, LAYOUTS } from "@/lib/catalog"
+import { toast } from "sonner"
 
-type Layout = "65" | "75" | "100"
 type Case = "Aluminium" | "Polycarbonate"
 type Switch = "Linear" | "Tactile" | "Clicky"
-
-const layouts: { id: Layout; label: string; base: number; keys: number }[] = [
-  { id: "65", label: "65%", base: 6_499, keys: 68 },
-  { id: "75", label: "75%", base: 9_999, keys: 84 },
-  { id: "100", label: "100%", base: 10_499, keys: 104 },
-]
-
-const caseColors = [
-  { label: "Lilac", color: "#B9A6E8" },
-  { label: "Sakura", color: "#F4C9DA" },
-  { label: "Graphite", color: "#3B3744" },
-  { label: "Ivory", color: "#F3EEE3" },
-]
-
-const formatPrice = (price: number) =>
-  `₹${new Intl.NumberFormat("en-IN").format(price)}`
-
-function isLayout(value: string | undefined): value is Layout {
-  return layouts.some((item) => item.id === value)
-}
 
 export function ConfiguratorPage() {
   const { layout } = useParams<{ layout: string }>()
   const navigate = useNavigate()
   const initialLayout = isLayout(layout) ? layout : "75"
   const selectedLayout = initialLayout
+  const { addItem } = useCart()
+  const { saveDesign } = useSavedDesigns()
   const [selectedCase, setSelectedCase] = useState<Case>(initialLayout === "75" ? "Aluminium" : "Polycarbonate")
   const [caseColor, setCaseColor] = useState(initialLayout === "65" ? "#F4C9DA" : initialLayout === "100" ? "#F3EEE3" : "#B9A6E8")
   const [keycapColor, setKeycapColor] = useState(initialLayout === "100" ? "#B9A6E8" : "#F3EEE3")
@@ -42,12 +27,12 @@ export function ConfiguratorPage() {
   const [addedToCart, setAddedToCart] = useState(false)
   const [cartError, setCartError] = useState("")
 
-  const layoutOption = layouts.find((item) => item.id === selectedLayout) ?? layouts[1]
-  const casePrice = selectedCase === "Aluminium" ? 2_400 : 0
-  const switchPrice = selectedSwitch === "Linear" ? 2_500 : 0
-  const total = layoutOption.base + casePrice + switchPrice
+  const layoutOption = getLayoutSpec(selectedLayout)
+  const casePrice = selectedCase === "Aluminium" ? layoutOption.aluminiumUpgrade : 0
+  const switchPrice = selectedSwitch === "Linear" ? layoutOption.linearSwitchUpgrade : 0
+  const total = layoutOption.basePrice + casePrice + switchPrice
 
-  const chooseLayout = (value: Layout) => {
+  const chooseLayout = (value: (typeof LAYOUTS)[number]["id"]) => {
     setAddedToCart(false)
     setCartError("")
     navigate(`/customize/${value}`)
@@ -55,26 +40,40 @@ export function ConfiguratorPage() {
 
   const addToCart = () => {
     setCartError("")
-    try {
-      const saved = localStorage.getItem("triare-cart")
-      const cart: unknown = saved ? JSON.parse(saved) : []
-      if (!Array.isArray(cart)) throw new Error("Saved cart is not a list")
-      cart.push({
-        id: `custom-${Date.now()}`,
-        layout: selectedLayout,
-        case: selectedCase,
-        keycaps: caseColors.find((item) => item.color === keycapColor)?.label ?? "Custom",
-        price: total,
-        caseColor,
-        keycapColor,
-      })
-      localStorage.setItem("triare-cart", JSON.stringify(cart))
-      window.dispatchEvent(new Event("triare-cart-updated"))
+    const added = addItem({
+      layout: selectedLayout,
+      case: selectedCase,
+      keycaps: CASE_COLORS.find((item) => item.color === keycapColor)?.label ?? "Custom",
+      switch: selectedSwitch,
+      price: total,
+      caseColor,
+      keycapColor,
+    })
+    if (added) {
       setAddedToCart(true)
-    } catch (error) {
-      console.error("Could not add build to cart", error)
+      return true
+    } else {
       setAddedToCart(false)
       setCartError("Could not save this build to your cart. Please try again.")
+      return false
+    }
+  }
+
+  const saveCurrentDesign = () => {
+    const saved = saveDesign({
+      name: `${CASE_COLORS.find((item) => item.color === caseColor)?.label ?? "Custom"} ${selectedLayout}%`,
+      layout: selectedLayout,
+      case: selectedCase,
+      keycaps: CASE_COLORS.find((item) => item.color === keycapColor)?.label ?? "Custom",
+      switch: selectedSwitch,
+      price: total,
+      caseColor,
+      keycapColor,
+    })
+    if (saved) {
+      toast.success("Design saved", { description: "Find it in your saved designs." })
+    } else {
+      toast.error("Could not save this design. Please try again.")
     }
   }
 
@@ -103,7 +102,7 @@ export function ConfiguratorPage() {
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.45fr)_minmax(340px,0.85fr)]">
         <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="mb-5 inline-flex rounded-lg border border-border p-1" aria-label="Keyboard layout">
-            {layouts.map((item) => (
+            {LAYOUTS.map((item) => (
               <button
                 key={item.id}
                 type="button"
@@ -135,7 +134,7 @@ export function ConfiguratorPage() {
               <span>Parts</span>
             </div>
             <span className="text-xs text-muted-foreground">
-              {layoutOption.keys} keys · ANSI
+              {layoutOption.keyCount} keys · ANSI
             </span>
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
@@ -151,13 +150,13 @@ export function ConfiguratorPage() {
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
               </summary>
               <div className="px-4 pb-4 text-sm text-muted-foreground">
-                {layoutOption.keys} keys · compact ANSI layout
+                {layoutOption.keyCount} keys · compact ANSI layout
               </div>
             </details>
 
             <details open className="group">
               <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm">
-                <span><span className="text-muted-foreground">2 · </span>Case <span className="text-muted-foreground">— {selectedCase} · {caseColors.find((item) => item.color === caseColor)?.label}</span></span>
+                <span><span className="text-muted-foreground">2 · </span>Case <span className="text-muted-foreground">— {selectedCase} · {CASE_COLORS.find((item) => item.color === caseColor)?.label}</span></span>
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
               </summary>
               <div className="space-y-4 px-4 pb-4">
@@ -183,7 +182,7 @@ export function ConfiguratorPage() {
                         </span>
                       </span>
                       <span className="text-sm tabular-nums">
-                        {item === "Aluminium" ? "+₹2,400" : "Included"}
+                        {item === "Aluminium" ? `+${formatPrice(layoutOption.aluminiumUpgrade)}` : "Included"}
                       </span>
                     </button>
                   ))}
@@ -191,7 +190,7 @@ export function ConfiguratorPage() {
                 <fieldset>
                   <legend className="mb-2 text-sm font-medium">Colourway</legend>
                   <div className="flex flex-wrap gap-2">
-                    {caseColors.map((item) => (
+                    {CASE_COLORS.map((item) => (
                       <button
                         key={item.label}
                         type="button"
@@ -239,7 +238,7 @@ export function ConfiguratorPage() {
                   >
                     {item}
                     <span className="mt-1 block text-xs text-muted-foreground">
-                      {item === "Linear" ? "+₹2,500" : "Included"}
+                      {item === "Linear" ? `+${formatPrice(layoutOption.linearSwitchUpgrade)}` : "Included"}
                     </span>
                   </button>
                 ))}
@@ -252,7 +251,7 @@ export function ConfiguratorPage() {
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
               </summary>
               <div className="flex flex-wrap gap-2 px-4 pb-4">
-                {caseColors.map((item) => (
+                {CASE_COLORS.map((item) => (
                   <button
                     key={item.label}
                     type="button"
@@ -280,7 +279,7 @@ export function ConfiguratorPage() {
 
             <details className="group">
               <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm">
-                <span><span className="text-muted-foreground">7 · </span>Battery <span className="text-muted-foreground">— 2000 mAh</span></span>
+                <span><span className="text-muted-foreground">7 · </span>Battery <span className="text-muted-foreground">— {DEFAULT_BATTERY_CAPACITY_MAH} mAh</span></span>
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
               </summary>
               <p className="px-4 pb-4 text-sm text-muted-foreground">Included and user-replaceable.</p>
@@ -289,7 +288,7 @@ export function ConfiguratorPage() {
 
           <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">{selectedLayout}% layout (base)</span><span className="tabular-nums">{formatPrice(layoutOption.base)}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">{selectedLayout}% layout (base)</span><span className="tabular-nums">{formatPrice(layoutOption.basePrice)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{selectedCase} case</span><span className="tabular-nums">{casePrice ? `+${formatPrice(casePrice)}` : "Included"}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{selectedSwitch} switches</span><span className="tabular-nums">{switchPrice ? `+${formatPrice(switchPrice)}` : "Included"}</span></div>
               <p className="text-xs text-muted-foreground">Sockets · keycaps · controller · battery · PCB included</p>
@@ -304,10 +303,10 @@ export function ConfiguratorPage() {
             </Button>
             {cartError && <p role="alert" className="mt-2 text-sm text-destructive">{cartError}</p>}
             <div className="mt-2 flex gap-2">
-              <Button variant="secondary" className="flex-1" onClick={() => { addToCart(); navigate("/checkout") }}>
+              <Button variant="secondary" className="flex-1" onClick={() => { if (addToCart()) navigate("/checkout") }}>
                 Buy now
               </Button>
-              <Button variant="ghost" className="flex-1" onClick={() => setAddedToCart(false)}>
+              <Button variant="ghost" className="flex-1" onClick={saveCurrentDesign}>
                 <Bookmark className="mr-2 h-4 w-4" /> Save design
               </Button>
             </div>

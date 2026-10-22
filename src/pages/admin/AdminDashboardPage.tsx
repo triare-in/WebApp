@@ -1,12 +1,11 @@
-"use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Package, ShoppingCart, AlertTriangle, DollarSign } from "lucide-react"
+import { Package, ShoppingCart, AlertTriangle, IndianRupee } from "lucide-react"
 import { Link } from "react-router-dom"
 
 const stats = [
-  { label: "Total Revenue", value: "₹4,82,500", change: "+12%", icon: DollarSign },
+  { label: "Total Revenue", value: "₹4,82,500", change: "+12%", icon: IndianRupee },
   { label: "Orders This Month", value: "124", change: "+8%", icon: ShoppingCart },
   { label: "Build Queue", value: "18", change: "3 urgent", icon: Package, urgent: true },
   { label: "Active Claims", value: "7", change: "2 new", icon: AlertTriangle, urgent: true },
@@ -18,7 +17,7 @@ export function AdminDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Overview of Triare operations</p>
+          <p className="text-muted-foreground">Overview of Revara operations</p>
         </div>
         <Badge variant="secondary">Last updated 5 min ago</Badge>
       </div>
@@ -27,7 +26,7 @@ export function AdminDashboardPage() {
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.label} className={stat.urgent ? "border-orange-500/50" : ""}>
+            <Card key={stat.label} className={stat.urgent ? "border-warning/50" : ""}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
                 <Icon className="h-4 w-4 text-muted-foreground" />

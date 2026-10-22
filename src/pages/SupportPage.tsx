@@ -1,17 +1,18 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
-import { Grid } from "@/components/ui/grid"
 import {
   Shield,
   Folder,
   MousePointer,
   ChevronRight,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { KeyboardPreview } from "@/components/app/KeyboardPreview"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 const faqItems = [
   {
@@ -88,9 +89,7 @@ export function SupportPage() {
             </p>
           </div>
           <div className="flex-1 lg:w-1/2 flex items-center justify-center">
-            <svg viewBox="0 0 520 190" className="w-full rounded-2xl overflow-hidden bg-muted">
-              <rect x="3" y="3" width="514" height="184" rx="14" />
-            </svg>
+            <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full rounded-2xl bg-muted p-4" />
             <p className="mt-3 text-xs text-muted-foreground text-center">
               Preview is illustrative. Final product may vary slightly.
             </p>
@@ -120,103 +119,55 @@ export function SupportPage() {
         </Accordion>
       </section>
 
-      {/* Support cards */}
+      {/* Support links */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="divide-y divide-border border-y border-border">
           {supportCards.map((card, index) => (
-            <Card key={index} className="p-6 hover:bg-accent/50 transition-colors">
-              <CardContent className="flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-lg ${card.bg || "bg-muted/50"} flex items-center justify-center shrink-0`}>
-                    <card.icon className="h-5 w-5" />
-                  </div>
-                  <span className="text-xs font-medium text-muted-foreground capitalize-first">0{index + 1}</span>
-                </div>
-                <h3 className="font-display font-medium mb-2">{card.title}</h3>
-                <p className="text-muted-foreground line-clamp-2">{card.description}</p>
-                <div className="mt-3">
-                  <Button variant="outline" size="sm" asChild>
-                    <Link to={card.href} className="text-primary hover:underline">
-                      Learn more
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <Link key={card.title} to={card.href} className="group flex items-start gap-4 py-5 hover:bg-accent/30 sm:gap-6 sm:px-3">
+              <span className="font-mono text-xs text-muted-foreground">0{index + 1}</span>
+              <card.icon className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+              <div className="flex-1">
+                <h3 className="font-display font-semibold group-hover:text-primary">{card.title}</h3>
+                <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted-foreground">{card.description}</p>
+              </div>
+              <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" />
+            </Link>
           ))}
-        </Grid>
+        </div>
       </section>
 
       {/* Contact form */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="overflow-hidden">
-          <CardContent className="p-8 lg:p-12">
+        <div className="border-y border-border py-8 lg:py-12">
             <h2 className="font-display text-3xl font-bold tracking-tight mb-6">Contact us</h2>
             <p className="text-muted-foreground text-lg mb-6">
-              Have a question that's not covered above? Fill out the form and we'll get back to you within 48 hours.
+              This contact form is a preview and does not send messages yet. Support contact details will be published before launch.
             </p>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={(event) => {
+              event.preventDefault()
+              toast.info("The contact form is not connected in this preview.")
+            }}>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className={cn(
-                    "w-full rounded-md border-border px-3 py-2 text-body",
-                    "focus:outline-none focus:border-primary"
-                  )}
-                  placeholder="Your name"
-                  required
-                />
+                <Label htmlFor="support-name">Name</Label>
+                <Input id="support-name" name="name" autoComplete="name" placeholder="Your name" required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className={cn(
-                    "w-full rounded-md border-border px-3 py-2 text-body",
-                    "focus:outline-none focus:border-primary"
-                  )}
-                  placeholder="you@example.com"
-                  required
-                />
+                <Label htmlFor="support-email">Email</Label>
+                <Input id="support-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  className={cn(
-                    "w-full rounded-md border-border px-3 py-2 text-body",
-                    "focus:outline-none focus:border-primary"
-                  )}
-                  placeholder="Subject"
-                />
+                <Label htmlFor="support-subject">Subject</Label>
+                <Input id="support-subject" name="subject" placeholder="Subject" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">
-                  Message
-                </label>
-                <textarea
-                  rows={4}
-                  className={cn(
-                    "w-full rounded-md border-border px-3 py-2 text-body resize-y",
-                    "focus:outline-none focus:border-primary"
-                  )}
-                  placeholder="Describe your issue or question..."
-                  required
-                />
+                <Label htmlFor="support-message">Message</Label>
+                <Textarea id="support-message" name="message" rows={4} placeholder="Describe your issue or question..." required />
               </div>
               <Button type="submit" className="w-full h-12 px-4">
                 Send message
               </Button>
             </form>
-          </CardContent>
-        </Card>
+        </div>
       </section>
     </div>
   )

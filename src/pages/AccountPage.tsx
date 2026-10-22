@@ -1,4 +1,3 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -6,19 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { User, MapPin, CreditCard } from "lucide-react"
+import { User, MapPin, ShieldCheck } from "lucide-react"
 
 export function AccountPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
 
       <div className="flex-1">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="font-display text-3xl font-bold tracking-tight mb-8">My account</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Profile */}
             <Card className="lg:col-span-1">
               <CardHeader>
                 <CardTitle className="font-display">Profile</CardTitle>
@@ -46,7 +43,6 @@ export function AccountPage() {
               </CardContent>
             </Card>
 
-            {/* Address & Settings */}
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader>
@@ -85,26 +81,14 @@ export function AccountPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="font-display flex items-center gap-2">
-                    <CreditCard className="h-5 w-5" />
-                    Payment methods
+                    <ShieldCheck className="h-5 w-5" />
+                    Payment privacy
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-lg border border-border">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-12 rounded bg-muted flex items-center justify-center">
-                          <span className="text-xs font-mono">****</span>
-                        </div>
-                        <div>
-                          <p className="font-medium">Visa ending in 4242</p>
-                          <p className="text-sm text-muted-foreground">Expires 12/28</p>
-                        </div>
-                      </div>
-                      <Badge variant="secondary">Default</Badge>
-                    </div>
-                    <Button variant="outline" size="sm" className="mt-2">Add payment method</Button>
-                  </div>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    Revara does not store payment card, UPI or bank details. Payment methods are entered with the payment provider at checkout.
+                  </p>
                 </CardContent>
               </Card>
 
@@ -117,7 +101,7 @@ export function AccountPage() {
                     <span className="font-medium">My orders history</span>
                     <span className="text-muted-foreground text-sm">View purchases →</span>
                   </Link>
-                  <Link to="/account/saved" className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
+                  <Link to="/account/designs" className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
                     <span className="font-medium">Saved designs</span>
                     <span className="text-muted-foreground text-sm">3 designs →</span>
                   </Link>

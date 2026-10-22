@@ -1,57 +1,74 @@
-"use client"
-
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { ArrowUpRight } from "lucide-react"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
-
-const presets = [
-  { id: "1", name: "75% Lilac Aluminium", layout: "75", caseColor: "#B9A6E8", keycapColor: "#F3EEE3", price: "₹12,499", badge: "Best seller" },
-  { id: "2", name: "65% Sakura Polycarbonate", layout: "65", caseColor: "#F4C9DA", keycapColor: "#F3EEE3", price: "₹8,999", badge: "" },
-  { id: "3", name: "100% Ivory Polycarbonate", layout: "100", caseColor: "#F3EEE3", keycapColor: "#B9A6E8", price: "₹12,999", badge: "" },
-]
+import { Button } from "@/components/ui/button"
+import { getLayoutSpec, getPresetPrice, KEYBOARD_PRESETS } from "@/lib/catalog"
 
 export function KeyboardsPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <header className="mb-12 max-w-2xl">
+        <p className="mb-3 text-sm font-medium text-muted-foreground">Made to order · built to be repaired</p>
+        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Choose a starting point</h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          Each preset opens in the configurator. Change the case, switches and keycaps before you decide.
+        </p>
+      </header>
 
-      <div className="flex-1">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-8">Keyboards</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {presets.map((preset) => (
-              <Card key={preset.id} className="overflow-hidden hover:bg-accent/50 transition-colors cursor-pointer">
-                <CardContent className="p-0">
-                  <div className="relative h-48">
-                    <KeyboardPreview
-                      layout={preset.layout as "65" | "75" | "100"}
-                      caseColor={preset.caseColor}
-                      keycapColor={preset.keycapColor}
-                      className="w-full h-full"
-                    />
-                    {preset.badge && (
-                      <span className="absolute left-2 top-2 bg-primary/90 text-primary-foreground text-xs font-medium px-2 py-1 rounded">
-                        {preset.badge}
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-display font-medium mb-1">{preset.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{preset.layout} layout</p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-display font-bold tabular-nums">{preset.price}</span>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to={`/customize/${preset.layout}`}>Customize</Link>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+      <div className="divide-y divide-border border-y border-border">
+        {KEYBOARD_PRESETS.map((preset, index) => {
+          const layout = getLayoutSpec(preset.layout)
+          return (
+            <article
+              key={preset.id}
+              className="grid items-center gap-6 py-7 md:grid-cols-[3rem_15rem_minmax(0,1fr)_auto] md:gap-8"
+            >
+              <span className="hidden font-mono text-sm text-muted-foreground md:block">
+                0{index + 1}
+              </span>
+              <Link
+                to={`/customize/${preset.layout}`}
+                aria-label={`Customize ${preset.name}`}
+                className="block rounded-xl bg-muted/60 p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <KeyboardPreview
+                  layout={preset.layout}
+                  caseColor={preset.caseColor}
+                  keycapColor={preset.keycapColor}
+                />
+              </Link>
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h2 className="font-display text-xl font-semibold">{preset.name}</h2>
+                  {"badge" in preset && preset.badge && (
+                    <span className="text-xs font-medium uppercase tracking-wide text-primary">{preset.badge}</span>
+                  )}
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {layout.keyCount} keys · {preset.case.toLowerCase()} case · {preset.layout}% ANSI
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Hot-swap sockets, wireless ZMK firmware, replaceable parts.
+                </p>
+              </div>
+              <div className="flex items-center justify-between gap-6 md:flex-col md:items-end">
+                <span className="font-display text-lg font-semibold tabular-nums">
+                  {`₹${new Intl.NumberFormat("en-IN").format(getPresetPrice(preset.layout, preset.case))}`}
+                </span>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to={`/customize/${preset.layout}`}>
+                    Customize <ArrowUpRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </article>
+          )
+        })}
       </div>
 
+      <p className="mt-6 text-sm text-muted-foreground">
+        Prices include the selected preset parts. Your final total updates as you change options.
+      </p>
     </div>
   )
 }

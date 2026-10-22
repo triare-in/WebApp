@@ -1,4 +1,4 @@
-# Policy templates for {Brand}
+# Policy templates for Revara
 
 **Templates only, not legal advice.** Fill every `[[placeholder]]`, remove the `NOTE` lines, and have a qualified Indian lawyer review the final text before launch.
 

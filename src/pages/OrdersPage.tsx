@@ -1,4 +1,3 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -15,7 +14,7 @@ const orders = [
 
 export function OrdersPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
       <div className="flex-1">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="font-display text-3xl font-bold tracking-tight mb-8">My orders</h1>

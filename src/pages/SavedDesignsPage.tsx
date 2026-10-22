@@ -1,92 +1,65 @@
-"use client"
-
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Trash2 } from "lucide-react"
+import { toast } from "sonner"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
-import { Trash2, Edit, Copy, Heart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useSavedDesigns } from "@/hooks/use-saved-designs"
 
-const savedDesigns = [
-  { id: "1", name: "Lilac Dream", layout: "75", caseColor: "#B9A6E8", keycapColor: "#F3EEE3", updated: "2 days ago" },
-  { id: "2", name: "Sakura Breeze", layout: "65", caseColor: "#F4C9DA", keycapColor: "#F3EEE3", updated: "1 week ago" },
-  { id: "3", name: "Ivory Classic", layout: "100", caseColor: "#F3EEE3", keycapColor: "#B9A6E8", updated: "2 weeks ago" },
-  { id: "4", name: "Midnight", layout: "75", caseColor: "#1E1B2E", keycapColor: "#2A2233", updated: "1 month ago" },
-]
+const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" })
 
 export function SavedDesignsPage() {
+  const { designs, removeDesign } = useSavedDesigns()
+
+  const handleRemove = (id: string) => {
+    if (!removeDesign(id)) toast.error("Could not remove this design.")
+  }
+
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="mb-2 text-sm text-muted-foreground">Your builds, kept on this device</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Saved designs</h1>
+        </div>
+        <Button asChild><Link to="/customize">Start a design</Link></Button>
+      </header>
 
-      <div className="flex-1">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight">Saved designs</h1>
-              <p className="text-muted-foreground text-sm mt-1">Your custom keyboard configurations</p>
-            </div>
-            <Button asChild>
-              <Link to="/customize">Create new</Link>
-            </Button>
-          </div>
-
-          {savedDesigns.length === 0 ? (
-            <Card className="text-center py-16">
-              <CardContent>
-                <Heart className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-                <h3 className="font-display text-lg font-semibold mb-2">No saved designs yet</h3>
-                <p className="text-muted-foreground mb-6">Start customizing to save your first design</p>
-                <Button asChild>
-                  <Link to="/customize">Start customizing</Link>
+      {designs.length === 0 ? (
+        <div className="border-y border-border py-12">
+          <h2 className="font-display text-xl font-semibold">Nothing saved yet</h2>
+          <p className="mt-2 max-w-lg text-muted-foreground">
+            Save a configuration from the configurator and it will appear here for your next visit.
+          </p>
+        </div>
+      ) : (
+        <div className="divide-y divide-border border-y border-border">
+          {designs.map((design) => (
+            <article key={design.id} className="grid items-center gap-5 py-5 sm:grid-cols-[12rem_minmax(0,1fr)_auto]">
+              <div className="rounded-lg bg-muted/60 p-3">
+                <KeyboardPreview layout={design.layout} caseColor={design.caseColor} keycapColor={design.keycapColor} />
+              </div>
+              <div>
+                <h2 className="font-display text-lg font-semibold">{design.name}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {design.layout}% · {design.case} · {design.switch} switches · {design.keycaps} keycaps
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Saved {dateFormatter.format(new Date(design.createdAt))}
+                </p>
+                <p className="mt-2 font-medium tabular-nums">₹{new Intl.NumberFormat("en-IN").format(design.price)}</p>
+              </div>
+              <div className="flex items-center gap-2 sm:justify-end">
+                <Button variant="outline" size="sm" asChild>
+                  <Link to={`/customize/${design.layout}`}>Continue building</Link>
                 </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {savedDesigns.map((design) => (
-                <Card key={design.id} className="overflow-hidden hover:bg-accent/50 transition-colors">
-                  <CardContent className="p-0">
-                    <div className="relative h-48">
-                      <KeyboardPreview
-                        layout={design.layout as "65" | "75" | "100"}
-                        caseColor={design.caseColor}
-                        keycapColor={design.keycapColor}
-                        className="w-full h-full"
-                      />
-                      <div className="absolute right-2 top-2 flex gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 bg-background/80" aria-label="Edit">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 bg-background/80" aria-label="Copy">
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 bg-background/80 text-destructive hover:text-destructive" aria-label="Delete">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-display font-medium">{design.name}</h3>
-                        <span className="text-xs text-muted-foreground">{design.updated}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3 capitalize">{design.layout} layout</p>
-                      <div className="flex items-center justify-between">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link to={`/customize/${design.layout}?design=${design.id}`}>Continue</Link>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={`/customize/${design.layout}?duplicate=${design.id}`}>Duplicate</Link>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
-
-    </div>
+                <Button variant="ghost" size="icon" aria-label={`Delete ${design.name}`} onClick={() => handleRemove(design.id)}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
   )
 }

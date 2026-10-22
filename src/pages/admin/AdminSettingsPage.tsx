@@ -1,4 +1,3 @@
-"use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -22,11 +21,11 @@ export function AdminSettingsPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label>Store name</Label>
-            <Input defaultValue="Triare" />
+            <Input defaultValue="Revara" />
           </div>
           <div className="space-y-2">
             <Label>Support email</Label>
-            <Input defaultValue="support@triare.in" />
+            <Input placeholder="Support email (set before launch)" />
           </div>
           <div className="space-y-2">
             <Label>Default currency</Label>

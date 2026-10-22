@@ -1,4 +1,3 @@
-"use client"
 
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -6,7 +5,7 @@ import { Home, Search } from "lucide-react"
 
 export function NotFoundPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background font-body">
+    <div className="flex flex-col bg-background font-body">
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <div className="mb-8">
