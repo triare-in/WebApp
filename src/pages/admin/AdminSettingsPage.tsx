@@ -28,7 +28,7 @@ export function AdminSettingsPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Field id="store-name" label="Store name"><Input id="store-name" defaultValue="Revara" /></Field>
+            <Field id="store-name" label="Store name"><Input id="store-name" defaultValue="Triare" /></Field>
             <Field id="default-currency" label="Default currency"><Input id="default-currency" defaultValue="INR" /></Field>
             <Field id="support-email" label="Support email"><Input id="support-email" type="email" placeholder="Set before launch" /></Field>
             <Field id="support-phone" label="Support phone"><Input id="support-phone" type="tel" placeholder="Set before launch" /></Field>

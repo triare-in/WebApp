@@ -13,7 +13,7 @@ const pageTitles: Record<string, string> = {
   "/orders": "Your orders",
   "/account/designs": "Saved designs",
   "/account": "Your account",
-  "/about": "About Revara",
+  "/about": "About Triare",
   "/support": "Support",
   "/policies/shipping": "Shipping policy",
   "/policies/returns": "Returns and refunds",
@@ -45,7 +45,7 @@ export function RouteEffects() {
         : pathname.startsWith("/orders/") ? "Order details"
           : pathname.startsWith("/admin") ? "Store administration"
             : "Page not found")
-    document.title = `${title} | Revara`
+    document.title = `${title} | Triare`
   }, [pathname, hash])
 
   return null

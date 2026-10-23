@@ -13,7 +13,7 @@ import {
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/hooks/use-cart"
-import { RevaraMark } from "@/components/brand/RevaraMark"
+import { TriareMark } from "@/components/brand/TriareMark"
 
 const navigation = [
   { name: "Keyboards", href: "/keyboards" },
@@ -44,9 +44,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 h-16 shrink-0 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-full max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Revara home">
-          <RevaraMark size={32} />
-          <span className="font-display text-xl font-semibold tracking-tight">Revara</span>
+        <Link to="/" className="flex items-center gap-2.5" aria-label="Triare home">
+          <TriareMark size={32} />
+          <span className="font-display text-xl font-semibold tracking-tight">Triare</span>
         </Link>
 
         <nav className="hidden flex-1 items-center justify-center gap-6 lg:flex" aria-label="Primary navigation">

@@ -1,8 +1,8 @@
-# Revara WebApp
+# Triare WebApp
 
 ## Table of Contents
 
-- [Revara WebApp](#revara-webapp)
+- [Triare WebApp](#triare-webapp)
   - [Table of Contents](#table-of-contents)
   - [Tech Stack](#tech-stack)
   - [Features](#features)

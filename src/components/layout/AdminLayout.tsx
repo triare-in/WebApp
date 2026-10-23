@@ -26,7 +26,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { RevaraMark } from "@/components/brand/RevaraMark"
+import { TriareMark } from "@/components/brand/TriareMark"
 import { RouteErrorBoundary } from "@/components/layout/AppErrorBoundary"
 
 const adminNavigation = [
@@ -57,9 +57,9 @@ export function AdminLayout() {
       <Sidebar collapsible="icon" variant="inset">
         <SidebarContent>
           <div className="flex h-16 items-center justify-start gap-2 border-b px-2 group-data-[collapsible=icon]:justify-center">
-            <Link to="/admin" aria-label="Revara admin dashboard" className="flex min-w-0 items-center gap-2">
-              <RevaraMark size={28} />
-              <span className="truncate font-display text-lg font-semibold group-data-[collapsible=icon]:hidden">Revara</span>
+            <Link to="/admin" aria-label="Triare admin dashboard" className="flex min-w-0 items-center gap-2">
+              <TriareMark size={28} />
+              <span className="truncate font-display text-lg font-semibold group-data-[collapsible=icon]:hidden">Triare</span>
             </Link>
           </div>
           <SidebarGroup>

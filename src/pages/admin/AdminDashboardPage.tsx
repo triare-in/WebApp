@@ -24,7 +24,7 @@ export function AdminDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Overview of Revara operations</p>
+          <p className="text-muted-foreground">Overview of Triare operations</p>
         </div>
       </div>
 

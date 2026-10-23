@@ -4,32 +4,31 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes"
 import { MainLayout } from "@/components/layout/MainLayout"
-import { AdminLayout } from "@/components/layout/AdminLayout"
 import { RouteEffects } from "@/components/layout/RouteEffects"
 
-// Customer pages
-import { HomePage } from "@/pages/HomePage"
-import { KeyboardsPage } from "@/pages/KeyboardsPage"
-import { ConfiguratorPage } from "@/pages/ConfiguratorPage"
-import { RepairabilityPage } from "@/pages/RepairabilityPage"
-import { FirmwarePage } from "@/pages/FirmwarePage"
-import { CartPage } from "@/pages/CartPage"
-import { CheckoutPage } from "@/pages/CheckoutPage"
-import { AuthPage } from "@/pages/AuthPage"
-import { OrdersPage } from "@/pages/OrdersPage"
-import { OrderDetailPage } from "@/pages/OrderDetailPage"
-import { SavedDesignsPage } from "@/pages/SavedDesignsPage"
-import { AccountPage } from "@/pages/AccountPage"
-import { AboutPage } from "@/pages/AboutPage"
-import { SupportPage } from "@/pages/SupportPage"
-import { ClaimPage } from "@/pages/ClaimPage"
-import { ShippingPolicyPage } from "@/pages/ShippingPolicyPage"
-import { ReturnsPolicyPage } from "@/pages/ReturnsPolicyPage"
-import { WarrantyPolicyPage } from "@/pages/WarrantyPolicyPage"
-import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage"
-import { TermsPolicyPage } from "@/pages/TermsPolicyPage"
-import { NotFoundPage } from "@/pages/NotFoundPage"
+const HomePage = lazy(() => import("@/pages/HomePage").then((module) => ({ default: module.HomePage })))
+const KeyboardsPage = lazy(() => import("@/pages/KeyboardsPage").then((module) => ({ default: module.KeyboardsPage })))
+const ConfiguratorPage = lazy(() => import("@/pages/ConfiguratorPage").then((module) => ({ default: module.ConfiguratorPage })))
+const RepairabilityPage = lazy(() => import("@/pages/RepairabilityPage").then((module) => ({ default: module.RepairabilityPage })))
+const FirmwarePage = lazy(() => import("@/pages/FirmwarePage").then((module) => ({ default: module.FirmwarePage })))
+const CartPage = lazy(() => import("@/pages/CartPage").then((module) => ({ default: module.CartPage })))
+const CheckoutPage = lazy(() => import("@/pages/CheckoutPage").then((module) => ({ default: module.CheckoutPage })))
+const AuthPage = lazy(() => import("@/pages/AuthPage").then((module) => ({ default: module.AuthPage })))
+const OrdersPage = lazy(() => import("@/pages/OrdersPage").then((module) => ({ default: module.OrdersPage })))
+const OrderDetailPage = lazy(() => import("@/pages/OrderDetailPage").then((module) => ({ default: module.OrderDetailPage })))
+const SavedDesignsPage = lazy(() => import("@/pages/SavedDesignsPage").then((module) => ({ default: module.SavedDesignsPage })))
+const AccountPage = lazy(() => import("@/pages/AccountPage").then((module) => ({ default: module.AccountPage })))
+const AboutPage = lazy(() => import("@/pages/AboutPage").then((module) => ({ default: module.AboutPage })))
+const SupportPage = lazy(() => import("@/pages/SupportPage").then((module) => ({ default: module.SupportPage })))
+const ClaimPage = lazy(() => import("@/pages/ClaimPage").then((module) => ({ default: module.ClaimPage })))
+const ShippingPolicyPage = lazy(() => import("@/pages/ShippingPolicyPage").then((module) => ({ default: module.ShippingPolicyPage })))
+const ReturnsPolicyPage = lazy(() => import("@/pages/ReturnsPolicyPage").then((module) => ({ default: module.ReturnsPolicyPage })))
+const WarrantyPolicyPage = lazy(() => import("@/pages/WarrantyPolicyPage").then((module) => ({ default: module.WarrantyPolicyPage })))
+const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage").then((module) => ({ default: module.PrivacyPolicyPage })))
+const TermsPolicyPage = lazy(() => import("@/pages/TermsPolicyPage").then((module) => ({ default: module.TermsPolicyPage })))
+const NotFoundPage = lazy(() => import("@/pages/NotFoundPage").then((module) => ({ default: module.NotFoundPage })))
 
+const AdminLayout = lazy(() => import("@/components/layout/AdminLayout").then((module) => ({ default: module.AdminLayout })))
 const AdminDashboardPage = lazy(() => import("@/pages/admin/AdminDashboardPage").then((module) => ({ default: module.AdminDashboardPage })))
 const AdminOrdersPage = lazy(() => import("@/pages/admin/AdminOrdersPage").then((module) => ({ default: module.AdminOrdersPage })))
 const AdminOrderDetailPage = lazy(() => import("@/pages/admin/AdminOrderDetailPage").then((module) => ({ default: module.AdminOrderDetailPage })))
@@ -48,6 +47,7 @@ export default function App() {
         <BrowserRouter>
           <div className="min-h-dvh bg-background">
             <RouteEffects />
+            <Suspense fallback={<p role="status" className="p-6 text-sm text-muted-foreground">Loading page…</p>}>
             <Routes>
               {/* Public routes with main layout */}
               <Route element={<MainLayout />}>
@@ -92,6 +92,7 @@ export default function App() {
               </Route>
 
             </Routes>
+            </Suspense>
           </div>
           <Toaster position="bottom-right" richColors />
         </BrowserRouter>

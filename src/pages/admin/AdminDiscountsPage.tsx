@@ -19,7 +19,7 @@ import {
 
 const initialDiscounts = [
   { code: "WELCOME10", percent: "10%", uses: "124", expires: "Dec 2026", active: true },
-  { code: "REVARA20", percent: "20%", uses: "45", expires: "Nov 2026", active: true },
+  { code: "TRIARE20", percent: "20%", uses: "45", expires: "Nov 2026", active: true },
   { code: "SUMMER15", percent: "15%", uses: "89", expires: "Sep 2026", active: false },
 ]
 

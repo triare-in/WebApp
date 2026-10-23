@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react"
 import { z } from "zod"
 import type { Layout } from "@/lib/catalog"
 
-const CART_STORAGE_KEY = "revara-cart"
-const LEGACY_CART_STORAGE_KEY = "triare-cart"
-const CART_UPDATED_EVENT = "revara-cart-updated"
+const CART_STORAGE_KEY = "triare-cart"
+const LEGACY_CART_STORAGE_KEY = "revara-cart"
+const CART_UPDATED_EVENT = "triare-cart-updated"
 
 const CartItemSchema = z.object({
   id: z.string().min(1),

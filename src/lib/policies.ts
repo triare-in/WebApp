@@ -5,7 +5,7 @@ export const POLICY_LAST_UPDATED = "[[Effective date]]"
 
 export const shippingPolicy: PolicyDocument = {
   title: "Shipping policy",
-  summary: "Revara currently ships within India. Every keyboard is made to order.",
+  summary: "Triare currently ships within India. Every keyboard is made to order.",
   sections: [
     {
       title: "Where we ship",
@@ -43,7 +43,7 @@ export const returnsPolicy: PolicyDocument = {
     },
     {
       title: "Refunds",
-      paragraphs: ["A refund is considered only for an approved claim when the product is returned to Revara at the buyer's expense using the return address provided with the claim approval. A claim approval and return address are required before sending anything back."],
+      paragraphs: ["A refund is considered only for an approved claim when the product is returned to Triare at the buyer's expense using the return address provided with the claim approval. A claim approval and return address are required before sending anything back."],
     },
     {
       title: "Order cancellation",
@@ -86,7 +86,7 @@ export const warrantyPolicy: PolicyDocument = {
 
 export const privacyPolicy: PolicyDocument = {
   title: "Privacy policy",
-  summary: "Revara does not store card, UPI or bank details. This preview does not connect to a live payment service.",
+  summary: "Triare does not store card, UPI or bank details. This preview does not connect to a live payment service.",
   sections: [
     {
       title: "Information used by the store",
@@ -99,7 +99,7 @@ export const privacyPolicy: PolicyDocument = {
     },
     {
       title: "Payments",
-      paragraphs: ["Revara does not store your full card, UPI or bank details. If live payments are enabled, payment details are handled by the payment provider rather than stored by Revara."],
+      paragraphs: ["Triare does not store your full card, UPI or bank details. If live payments are enabled, payment details are handled by the payment provider rather than stored by Triare."],
     },
     {
       title: "Local storage",
@@ -114,11 +114,11 @@ export const privacyPolicy: PolicyDocument = {
 
 export const termsPolicy: PolicyDocument = {
   title: "Terms of use",
-  summary: "These terms describe the intended use of the Revara store preview. Final terms are subject to completion and legal review before launch.",
+  summary: "These terms describe the intended use of the Triare store preview. Final terms are subject to completion and legal review before launch.",
   sections: [
     {
       title: "Orders and prices",
-      paragraphs: ["Prices are shown in Indian rupees. An order is accepted only after an order confirmation. Revara may contact you if a price, availability or configuration error affects an order."],
+      paragraphs: ["Prices are shown in Indian rupees. An order is accepted only after an order confirmation. Triare may contact you if a price, availability or configuration error affects an order."],
     },
     {
       title: "Custom builds",

@@ -3,7 +3,7 @@
 **Status:** Accepted (revision 3)
 **Date:** 2026-10-18
 **Deciders:** Product owner
-**Brand:** Revara
+**Brand:** Triare
 **Related:** `DESIGN.md` (visual system), `RIVERMARK-PROMPTS.md` (per-page prompts), `WebApp/README.md`
 
 ### Revision 2 changes

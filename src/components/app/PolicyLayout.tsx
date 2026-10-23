@@ -26,7 +26,7 @@ export function PolicyLayout({ policy }: { policy: PolicyDocument }) {
     <PageContainer>
       <article className="w-full">
         <header className="mb-10 border-b border-border pb-7">
-          <p className="mb-3 text-sm text-muted-foreground">Revara policies</p>
+          <p className="mb-3 text-sm text-muted-foreground">Triare policies</p>
           <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">{policy.title}</h1>
           <p className="mt-4 max-w-prose text-lg leading-relaxed text-muted-foreground">{policy.summary}</p>
         </header>

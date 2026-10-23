@@ -50,7 +50,7 @@ export function AboutPage() {
               A keyboard should outlast its parts.
             </h1>
             <p className="text-lg text-muted-foreground mt-4 max-w-xl">
-              Revara builds repairable mechanical keyboards in India, with replaceable parts and a clear path to repair.
+              Triare builds repairable mechanical keyboards in India, with replaceable parts and a clear path to repair.
             </p>
             <div className="mt-6">
               <Button asChild>

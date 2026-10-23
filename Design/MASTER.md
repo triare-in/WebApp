@@ -1,4 +1,4 @@
-# Revara Design
+# Triare Design
 
 ## Product
 

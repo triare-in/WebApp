@@ -1,8 +1,8 @@
-interface RevaraMarkProps {
+interface TriareMarkProps {
   size?: number
 }
 
-export function RevaraMark({ size = 32 }: RevaraMarkProps) {
+export function TriareMark({ size = 32 }: TriareMarkProps) {
   return (
     <svg viewBox="0 0 264 264" width={size} height={size} aria-hidden="true" focusable="false">
       <polygon points="34.7,214.5 132.2,250.3 132.2,226.3 34.7,190.5" fill="#4F3892" />

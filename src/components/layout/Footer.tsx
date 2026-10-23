@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
 import { Sun, Moon } from "lucide-react"
-import { RevaraMark } from "@/components/brand/RevaraMark"
+import { TriareMark } from "@/components/brand/TriareMark"
 
 const footerLinks = {
   Shop: [
@@ -41,8 +41,8 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 pb-10 md:grid-cols-5">
           <div className="col-span-2 flex flex-col md:col-span-1">
             <div className="flex items-center gap-2">
-              <RevaraMark size={28} />
-              <span className="font-display text-lg font-semibold tracking-tight">Revara</span>
+              <TriareMark size={28} />
+              <span className="font-display text-lg font-semibold tracking-tight">Triare</span>
             </div>
             <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Repairable, wireless-first mechanical keyboards you can fix yourself.
@@ -118,7 +118,7 @@ export function Footer() {
         </div>
         <div className="border-t border-border pt-4">
           <p className="mx-auto max-w-7xl px-4 text-sm text-muted-foreground text-center">
-            © {copyrightYear} Revara
+            © {copyrightYear} Triare
           </p>
         </div>
       </div>

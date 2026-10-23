@@ -3,7 +3,7 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Revara design tokens — derived from Design/DESIGN.md §2.
+ * Triare design tokens — derived from Design/DESIGN.md §2.
  * Single source of truth for the store and the coding agent.
  * Never use raw hex in components; use bg-background, text-muted-foreground, etc.
  */

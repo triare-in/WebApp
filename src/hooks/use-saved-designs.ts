@@ -2,7 +2,8 @@ import { useCallback, useState } from "react"
 import { z } from "zod"
 import type { Layout } from "@/lib/catalog"
 
-const STORAGE_KEY = "revara-saved-designs"
+const STORAGE_KEY = "triare-saved-designs"
+const LEGACY_STORAGE_KEY = "revara-saved-designs"
 
 const SavedDesignSchema = z.object({
   id: z.string().min(1),
@@ -22,13 +23,16 @@ export type SavedDesign = z.infer<typeof SavedDesignSchema>
 
 function readDesigns(): SavedDesign[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const source = localStorage.getItem(STORAGE_KEY)
+    const isLegacy = source === null
+    const raw = source ?? localStorage.getItem(LEGACY_STORAGE_KEY)
     if (!raw) return []
     const result = SavedDesignsSchema.safeParse(JSON.parse(raw))
     if (!result.success) {
       console.error("Saved designs contain invalid items", result.error)
       return []
     }
+    if (isLegacy) localStorage.setItem(STORAGE_KEY, JSON.stringify(result.data))
     return result.data
   } catch (error) {
     console.error("Could not load saved designs", error)

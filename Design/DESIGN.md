@@ -262,7 +262,7 @@ Build one app component, `KeyboardPreview`, as an **inline layered SVG**.
 - **Wordmark:** "{Brand}" in Plus Jakarta Sans 700, sentence case, `-0.01em`, in `--foreground`. Lock-up: mark left, wordmark right, gap = mark width ÷ 3, clear space = mark height ÷ 2.
 - **Hero / empty-state illustration:** flat vector (no 3D render), the exploded switch + socket on a soft lavender backdrop with a faint contact shadow. This illustration may use a gentle lavender → white gradient; UI chrome may not.
 - **Motif:** exploded-view diagrams for the repair/parts pages; thin 1px leader lines in `--border`, labels in `caption` + mono part numbers.
-- **Name:** *to be decided* ("Revara" is already registered). The docs use the placeholder `{Brand}`; do one find-and-replace once the name is chosen. Run a trademark search (IP India, WIPO Global Brand Database, and any other market) **before** buying the domain.
+- **Name:** Triare. Verify trademark availability in India and target markets before launch.
 
 ---
 
@@ -283,7 +283,7 @@ Rules: each needs a **text name**, and every swatch is shown only via `ColorSwat
 ## 11. Decisions log & open questions
 **Confirmed:** v1 layouts 65% / 75% / 100% · flat three-part floating stack (keycap, switch, socket) as logo direction · first colourways (Lilac, Sakura, Graphite, Ivory; more later) · `lucide-react` · **2D preview instead of 3D** · interim AI-generated logo, hire a designer later.
 
-**Name:** "Revara" is taken. Placeholder `{Brand}` until chosen (also update `README.md`, `WebApp/README.md`, `index.html`, package name, and the "3D viewing" line in `WebApp/README.md` Features, which should now read "Live 2D preview of your customised keyboard").
+**Name:** Triare. The earlier placeholder-name notes are superseded; update visible branding and project documentation to use Triare.
 
 **Preview art plan:**
 1. **v1 needs no illustration.** Generate keys and case from layout JSON in code.

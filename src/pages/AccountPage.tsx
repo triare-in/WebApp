@@ -89,7 +89,7 @@ export function AccountPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    Revara does not store payment card, UPI or bank details. Payment methods are entered with the payment provider at checkout.
+                    Triare does not store payment card, UPI or bank details. Payment methods are entered with the payment provider at checkout.
                   </p>
                 </CardContent>
               </Card>
