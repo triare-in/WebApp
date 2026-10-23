@@ -2,13 +2,15 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
+import { PageContainer } from "@/components/app/PageContainer"
 import { getLayoutSpec, getPresetPrice, KEYBOARD_PRESETS } from "@/lib/catalog"
 import {
   MousePointer,
   Box,
-  Truck,
+  Battery,
+  Keyboard,
+  PlugZap,
   Wrench,
   Star,
   ChevronRight,
@@ -43,23 +45,25 @@ const popularBuilds = KEYBOARD_PRESETS.map((preset) => ({
 
 const repairabilityParts = [
   { name: "Case", icon: <Box className="h-5 w-5" /> },
-  { name: "Sockets", icon: <MousePointer className="h-5 w-5" /> },
+  { name: "Sockets", icon: <PlugZap className="h-5 w-5" /> },
   { name: "Switches", icon: <Wrench className="h-5 w-5" /> },
-  { name: "Keycaps", icon: <Star className="h-5 w-5" /> },
-  { name: "Battery", icon: <Truck className="h-5 w-5" /> },
+  { name: "Keycaps", icon: <Keyboard className="h-5 w-5" /> },
+  { name: "Battery", icon: <Battery className="h-5 w-5" /> },
 ]
 
 const firmwareFeatures = [
   "Bluetooth 5.2 · pairs with 3 devices",
   "Edit your keymap with ZMK Studio on Studio-enabled builds",
-  "Firmware updates over USB-C",
+  "Install firmware over USB",
 ]
+
+const SHOW_SAMPLE_REVIEWS = false // Never present invented reviews as verified-buyer feedback.
 
 export function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <PageContainer as="section" className="py-16 lg:py-24">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 flex flex-col gap-4 text-center lg:text-left">
             <span className="text-sm font-medium text-muted-foreground">Wireless · hot-swap · repairable</span>
@@ -69,7 +73,7 @@ export function HomePage() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0">
               Built to order in India from parts you can swap. No glue, no soldering, no e-waste.
             </p>
-            <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="mt-4 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
               <Button size="lg" asChild className="w-full sm:w-auto h-12 px-8">
                 <Link to="/customize">Start a build</Link>
               </Button>
@@ -78,7 +82,7 @@ export function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="flex-1 rounded-2xl bg-muted p-8">
+          <div className="flex-1 rounded-xl bg-muted p-8">
             <div className="relative">
               <KeyboardPreview
                 layout="75"
@@ -86,20 +90,16 @@ export function HomePage() {
                 keycapColor="#F3EEE3"
                 className="w-full"
               />
-              <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-lg">
-                <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                2 · Case
-              </div>
             </div>
             <p className="mt-3 text-xs text-muted-foreground text-center">
               Preview is illustrative. Final product may vary slightly.
             </p>
           </div>
         </div>
-      </section>
+      </PageContainer>
 
       {/* How it works */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <h2 className="font-display text-3xl font-bold tracking-tight mb-12 text-center">How it works</h2>
         <div className="grid grid-cols-1 divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
           {features.map((feature, index) => (
@@ -110,19 +110,19 @@ export function HomePage() {
             </article>
           ))}
         </div>
-      </section>
+      </PageContainer>
 
       {/* Popular builds */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <h2 className="font-display text-3xl font-bold tracking-tight mb-10">Popular builds</h2>
         <div className="divide-y divide-border border-y border-border">
           {popularBuilds.map((build) => (
               <Link
                 key={build.name}
-                to={`/customize/${build.layout}`}
-                className="flex flex-wrap items-center gap-5 py-5 transition-colors hover:bg-accent/30 sm:flex-nowrap sm:px-3"
+                to={`/customize/preset/${build.id}`}
+                className="flex flex-col gap-4 rounded-lg px-3 py-5 transition-colors hover:bg-accent/30 sm:flex-row sm:items-center sm:gap-5"
               >
-                <div className="relative w-44 shrink-0 rounded-lg bg-muted p-2">
+                <div className="relative w-full shrink-0 rounded-lg bg-muted p-2 sm:w-44">
                   <KeyboardPreview
                     layout={build.layout}
                     caseColor={build.caseColor}
@@ -139,7 +139,7 @@ export function HomePage() {
                   <h3 className="font-display text-lg font-semibold truncate">{build.name}</h3>
                   <p className="text-sm text-muted-foreground">{build.subtitle}</p>
                 </div>
-                <div className="flex shrink-0 items-center gap-4">
+                <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:shrink-0 sm:justify-start">
                   <span className="font-display text-xl font-bold tabular-nums">
                     {`₹${new Intl.NumberFormat("en-IN").format(build.price)}`}
                   </span>
@@ -151,10 +151,10 @@ export function HomePage() {
               </Link>
           ))}
         </div>
-      </section>
+      </PageContainer>
 
       {/* Repairability band */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="border-y border-border py-10">
             <div className="flex flex-col gap-6">
               <h2 className="font-display text-3xl font-bold tracking-tight">Every part is swappable</h2>
@@ -181,10 +181,10 @@ export function HomePage() {
               </Link>
             </div>
         </div>
-      </section>
+      </PageContainer>
 
       {/* Firmware band */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="border-y border-border py-10">
             <h2 className="font-display text-3xl font-bold tracking-tight mb-6">Open firmware, your shortcuts</h2>
             <ul className="flex flex-col gap-4">
@@ -208,10 +208,10 @@ export function HomePage() {
               <ChevronRight className="h-4 w-4" />
             </Link>
         </div>
-      </section>
+      </PageContainer>
 
       {/* Proof band */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      {SHOW_SAMPLE_REVIEWS && <PageContainer as="section" className="py-16">
         <div className="border-y border-border py-10">
             <div className="flex flex-col lg:flex-row items-center gap-8">
               <div className="flex flex-col items-center gap-2 lg:w-1/4">
@@ -223,8 +223,7 @@ export function HomePage() {
                 </div>
                 <span className="text-xs text-muted-foreground">212 ratings</span>
               </div>
-              <Separator orientation="vertical" className="h-24 lg:h-auto w-full lg:w-px" />
-              <div className="flex-1">
+              <div className="flex-1 lg:border-l lg:pl-8">
                 <Badge variant="secondary" className="mb-3">
                   Verified buyer
                 </Badge>
@@ -233,19 +232,12 @@ export function HomePage() {
                 </p>
                 <span className="text-xs text-muted-foreground">75% · Lilac aluminium</span>
               </div>
-              <Link
-                to="/keyboards"
-                className="flex shrink-0 items-center gap-2 text-sm font-medium text-primary hover:underline"
-              >
-                All reviews
-                <ChevronRight className="h-4 w-4" />
-              </Link>
             </div>
         </div>
-      </section>
+      </PageContainer>}
 
       {/* Closing CTA */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="bg-secondary px-6 py-14 text-center sm:px-10 lg:py-20">
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               Your keyboard, minus the mystery.
@@ -257,7 +249,7 @@ export function HomePage() {
               <Link to="/customize">Start a build</Link>
             </Button>
         </div>
-      </section>
+      </PageContainer>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useLocation } from "react-router-dom"
 
 const pageTitles: Record<string, string> = {
@@ -23,17 +23,30 @@ const pageTitles: Record<string, string> = {
 }
 
 export function RouteEffects() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
+  const previousPathname = useRef(pathname)
+  const scrollKey = pathname.startsWith("/customize") ? "/customize" : pathname
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (!hash) window.scrollTo(0, 0)
+  }, [scrollKey, hash])
+
+  useEffect(() => {
+    const navigated = previousPathname.current !== pathname
+    previousPathname.current = pathname
+    if (navigated && !hash) {
+      document.querySelector<HTMLElement>("#main-content, #admin-content")?.focus({ preventScroll: true })
+    }
+
     const title = pageTitles[pathname]
-      ?? (pathname.startsWith("/customize/") ? "Keyboard configurator"
+      ?? (pathname === "/support/claim" ? "Raise a claim"
+        : pathname.startsWith("/auth/") ? "Sign in"
+          : pathname.startsWith("/customize/") ? "Keyboard configurator"
         : pathname.startsWith("/orders/") ? "Order details"
           : pathname.startsWith("/admin") ? "Store administration"
             : "Page not found")
     document.title = `${title} | Revara`
-  }, [pathname])
+  }, [pathname, hash])
 
   return null
 }

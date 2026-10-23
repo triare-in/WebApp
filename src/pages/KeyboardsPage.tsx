@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
+import { PageContainer } from "@/components/app/PageContainer"
 import { Button } from "@/components/ui/button"
 import { getLayoutSpec, getPresetPrice, KEYBOARD_PRESETS } from "@/lib/catalog"
 
 export function KeyboardsPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <PageContainer>
       <header className="mb-12 max-w-2xl">
         <p className="mb-3 text-sm font-medium text-muted-foreground">Made to order · built to be repaired</p>
-        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">Choose a starting point</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Choose a starting point</h1>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
           Each preset opens in the configurator. Change the case, switches and keycaps before you decide.
         </p>
@@ -27,7 +28,7 @@ export function KeyboardsPage() {
                 0{index + 1}
               </span>
               <Link
-                to={`/customize/${preset.layout}`}
+                to={`/customize/preset/${preset.id}`}
                 aria-label={`Customize ${preset.name}`}
                 className="block rounded-xl bg-muted/60 p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
@@ -53,11 +54,11 @@ export function KeyboardsPage() {
               </div>
               <div className="flex items-center justify-between gap-6 md:flex-col md:items-end">
                 <span className="font-display text-lg font-semibold tabular-nums">
-                  {`₹${new Intl.NumberFormat("en-IN").format(getPresetPrice(preset.layout, preset.case))}`}
+                  {`From ₹${new Intl.NumberFormat("en-IN").format(getPresetPrice(preset.layout, preset.case))}`}
                 </span>
                 <Button variant="outline" size="sm" asChild>
-                  <Link to={`/customize/${preset.layout}`}>
-                    Customize <ArrowUpRight className="ml-2 h-4 w-4" />
+                  <Link to={`/customize/preset/${preset.id}`}>
+                    Customize <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
@@ -69,6 +70,6 @@ export function KeyboardsPage() {
       <p className="mt-6 text-sm text-muted-foreground">
         Prices include the selected preset parts. Your final total updates as you change options.
       </p>
-    </div>
+    </PageContainer>
   )
 }

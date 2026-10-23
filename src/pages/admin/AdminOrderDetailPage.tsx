@@ -7,23 +7,24 @@ import { Separator } from "@/components/ui/separator"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 import { MapPin, CreditCard, Printer, ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
+import { OrderStatusBadge } from "@/components/app/OrderStatusBadge"
 
 export function AdminOrderDetailPage() {
   const { id } = useParams<{ id: string }>()
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-3">
           <Button variant="ghost" size="icon" asChild>
-            <Link to="/admin/orders">
-              <ArrowLeft className="h-4 w-4" />
+            <Link to="/admin/orders" aria-label="Back to orders">
+              <ArrowLeft className="size-4" aria-hidden="true" />
             </Link>
           </Button>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Order {id}</h1>
-          <Badge variant="warning">Building</Badge>
+          <h1 className="min-w-0 break-words font-display text-2xl font-bold tracking-tight sm:text-3xl">Order {id}</h1>
+          <OrderStatusBadge status="Building" />
         </div>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Printer className="h-4 w-4 mr-2" />
           Print label
         </Button>
@@ -36,9 +37,9 @@ export function AdminOrderDetailPage() {
               <CardTitle className="font-display">Build details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex gap-6">
-                <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-48 h-32" />
-                <div className="space-y-2">
+              <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:gap-6">
+                <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full max-w-60 sm:w-48" />
+                <div className="min-w-0 space-y-2">
                   <h3 className="font-display font-semibold text-lg">75% Lilac Aluminium</h3>
                   <p className="text-sm text-muted-foreground">Case: Aluminium Lilac · Keycaps: Ivory · Switches: Boba U4T</p>
                   <p className="text-sm text-muted-foreground">Wireless: Bluetooth · Firmware: ZMK</p>

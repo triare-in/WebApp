@@ -23,12 +23,12 @@ export function AdminBuildQueuePage() {
         {queue.map((item) => (
           <Card key={item.id} className={item.priority === "Urgent" ? "border-warning/50" : ""}>
             <CardContent className="p-6">
-              <div className="flex items-start gap-6">
-                <KeyboardPreview layout={item.layout as "65" | "75" | "100"} caseColor={item.caseColor} keycapColor={item.keycapColor} className="w-40 h-28" />
+              <div className="flex min-w-0 flex-col items-start gap-4 sm:flex-row sm:gap-6">
+                <KeyboardPreview layout={item.layout as "65" | "75" | "100"} caseColor={item.caseColor} keycapColor={item.keycapColor} className="w-full max-w-60 self-center sm:w-40 sm:self-start" />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <h3 className="font-mono font-medium">{item.id}</h3>
+                  <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h2 className="font-mono font-medium">{item.id}</h2>
                       <Badge variant={item.priority === "Urgent" ? "destructive" : item.priority === "High" ? "warning" : "secondary"}>{item.priority}</Badge>
                     </div>
                     <span className="text-sm text-muted-foreground">Started {item.started}</span>
@@ -48,7 +48,7 @@ export function AdminBuildQueuePage() {
                     </div>
                   </div>
                 </div>
-                <Button variant="outline" size="sm">View</Button>
+                <Button variant="outline" className="w-full sm:w-auto">View</Button>
               </div>
             </CardContent>
           </Card>

@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes"
 import { MainLayout } from "@/components/layout/MainLayout"
 import { AdminLayout } from "@/components/layout/AdminLayout"
-import { AppErrorBoundary } from "@/components/layout/AppErrorBoundary"
 import { RouteEffects } from "@/components/layout/RouteEffects"
 
 // Customer pages
@@ -45,17 +44,18 @@ const AdminSettingsPage = lazy(() => import("@/pages/admin/AdminSettingsPage").t
 export default function App() {
   return (
     <TooltipProvider>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <BrowserRouter>
-          <div className="min-h-screen bg-background font-body">
+          <div className="min-h-dvh bg-background">
             <RouteEffects />
-            <AppErrorBoundary>
             <Routes>
               {/* Public routes with main layout */}
               <Route element={<MainLayout />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/keyboards" element={<KeyboardsPage />} />
                 <Route path="/customize" element={<ConfiguratorPage />} />
+                <Route path="/customize/preset/:slug" element={<ConfiguratorPage />} />
+                <Route path="/customize/design/:designId" element={<ConfiguratorPage />} />
                 <Route path="/customize/:layout" element={<ConfiguratorPage />} />
                 <Route path="/repairability" element={<RepairabilityPage />} />
                 <Route path="/firmware" element={<FirmwarePage />} />
@@ -92,7 +92,6 @@ export default function App() {
               </Route>
 
             </Routes>
-            </AppErrorBoundary>
           </div>
           <Toaster position="bottom-right" richColors />
         </BrowserRouter>

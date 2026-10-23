@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
+import { PageContainer } from "@/components/app/PageContainer"
 import { DEFAULT_BATTERY_CAPACITY_MAH, formatPrice, getLayoutSpec } from "@/lib/catalog"
 import {
   Check,
@@ -12,36 +13,33 @@ import {
   Box,
   PlugZap,
   Battery,
+  Keyboard,
 } from "lucide-react"
 
 const swapSteps = [
   {
-    title: "1. Open the case",
+    title: "Open the case",
     description: "Use the included tool to pop the plate off and access the sockets.",
     icon: Wrench,
     bg: "bg-primary/10",
-    border: "border-primary",
   },
   {
-    title: "2. Remove old parts",
+    title: "Remove old parts",
     description: "Gently pull out old sockets, switches, or keycaps as needed.",
     icon: MousePointer,
     bg: "bg-warning/10",
-    border: "border-warning",
   },
   {
-    title: "3. Insert new parts",
+    title: "Insert new parts",
     description: "Drop in new sockets, switches, or keycaps. They snap in place.",
     icon: Check,
     bg: "bg-success/10",
-    border: "border-success",
   },
   {
-    title: "4. Test and enjoy",
+    title: "Test and enjoy",
     description: "Make sure everything works. Swap again anytime.",
     icon: Smile,
     bg: "bg-info/10",
-    border: "border-info",
   },
 ]
 
@@ -69,7 +67,7 @@ const partInfo = [
   },
   {
     name: "Keycaps",
-    icon: MousePointer,
+    icon: Keyboard,
     description: "Replace keycaps to change the look and feel. Cherry profile, OEM, or custom sets.",
     swapDifficulty: "Easy",
     tools: ["Fingers"],
@@ -87,10 +85,10 @@ export function RepairabilityPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <PageContainer as="section" className="py-16 lg:py-24">
         <div className="flex flex-col lg:flex-row items-center gap-8">
           <div className="flex-1 lg:w-1/2">
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight">
               Every part is swappable
             </h1>
             <p className="text-lg text-muted-foreground mt-4 max-w-xl">
@@ -102,40 +100,36 @@ export function RepairabilityPage() {
               </Button>
             </div>
           </div>
-          <div className="flex-1 lg:w-1/2 flex items-center justify-center">
-            <div className="relative">
+          <div className="flex flex-1 flex-col items-center lg:w-1/2">
+            <div className="w-full">
               <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full" />
-              <div className="absolute left-2 top-2 flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-lg">
-                <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                2 · Case
-              </div>
             </div>
             <p className="mt-3 text-xs text-muted-foreground text-center">
               Preview is illustrative. Final product may vary slightly.
             </p>
           </div>
         </div>
-      </section>
+      </PageContainer>
 
       {/* 3-Step Swap Process */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <h2 className="font-display text-3xl font-bold tracking-tight mb-12 text-center">How to swap parts</h2>
-        <div className="grid grid-cols-1 divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="grid grid-cols-1 divide-y divide-border md:grid-cols-4 md:divide-x md:divide-y-0">
           {swapSteps.map((step, index) => (
             <article key={step.title} className="py-5 first:pt-0 md:px-6 md:first:pl-0 md:first:pt-5">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-full ${step.bg} ${step.border}`}>
+              <div className={`flex h-10 w-10 items-center justify-center rounded-full ${step.bg}`}>
                 <step.icon className="h-5 w-5" />
               </div>
               <p className="mt-4 font-mono text-xs text-muted-foreground">0{index + 1}</p>
-              <h3 className="mt-2 font-display text-xl font-semibold">{step.title.replace(/^\d+\.\s*/, "")}</h3>
+              <h3 className="mt-2 font-display text-xl font-semibold">{step.title}</h3>
               <p className="mt-2 leading-relaxed text-muted-foreground">{step.description}</p>
             </article>
           ))}
         </div>
-      </section>
+      </PageContainer>
 
       {/* Parts table */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <h2 className="mb-6 font-display text-3xl font-bold tracking-tight">Replaceable parts</h2>
         <div className="divide-y divide-border border-y border-border">
           {partInfo.map((part) => (
@@ -152,10 +146,10 @@ export function RepairabilityPage() {
             </article>
           ))}
         </div>
-      </section>
+      </PageContainer>
 
       {/* CTA */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="bg-secondary px-6 py-14 text-center sm:px-10 lg:py-20">
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               Repair, don't replace.
@@ -171,12 +165,9 @@ export function RepairabilityPage() {
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/support">Need help?</Link>
               </Button>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/support">Ask about repairs</Link>
-              </Button>
             </div>
           </div>
-      </section>
+      </PageContainer>
     </div>
   )
 }

@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { RevaraMark } from "@/components/brand/RevaraMark"
+import { RouteErrorBoundary } from "@/components/layout/AppErrorBoundary"
 
 const adminNavigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -42,13 +43,20 @@ const adminNavigation = [
 
 export function AdminLayout() {
   const location = useLocation()
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
 
   return (
     <SidebarProvider>
+      <a
+        href="#admin-content"
+        className="sr-only z-[100] rounded-md bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to content
+      </a>
       <Sidebar collapsible="icon" variant="inset">
         <SidebarContent>
-          <div className="flex h-16 items-center gap-2 border-b px-4">
+          <div className="flex h-16 items-center justify-start gap-2 border-b px-2 group-data-[collapsible=icon]:justify-center">
             <Link to="/admin" aria-label="Revara admin dashboard" className="flex min-w-0 items-center gap-2">
               <RevaraMark size={28} />
               <span className="truncate font-display text-lg font-semibold group-data-[collapsible=icon]:hidden">Revara</span>
@@ -77,30 +85,26 @@ export function AdminLayout() {
         </SidebarContent>
       </Sidebar>
 
-      <SidebarInset className="min-w-0">
+      <SidebarInset id="admin-content" className="min-w-0">
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur sm:px-6">
           <div className="flex items-center gap-3">
             <SidebarTrigger aria-label="Toggle admin navigation" />
-            <span className="font-medium text-muted-foreground">Store administration</span>
+            <span className="hidden font-medium text-muted-foreground sm:inline">Store administration</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-              {theme === "dark" ? <Sun /> : <Moon />}
+            <Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={() => setTheme(isDark ? "light" : "dark")}>
+              {isDark ? <Sun /> : <Moon />}
             </Button>
             <Button variant="outline" size="sm" asChild>
               <Link to="/">View store</Link>
             </Button>
           </div>
         </header>
-        <a
-          href="#admin-content"
-          className="sr-only z-[100] rounded-md bg-primary px-4 py-2 text-primary-foreground focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
-        >
-          Skip to content
-        </a>
-        <main id="admin-content" className="flex-1 overflow-auto p-4 sm:p-6">
-          <Outlet />
-        </main>
+        <div className="flex-1 overflow-auto p-4 sm:p-6">
+          <RouteErrorBoundary>
+            <Outlet />
+          </RouteErrorBoundary>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )

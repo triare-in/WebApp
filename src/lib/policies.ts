@@ -1,5 +1,8 @@
 import type { PolicyDocument } from "@/components/app/PolicyLayout"
 
+// TODO(legal): Confirm the effective date and complete legal review before launch.
+export const POLICY_LAST_UPDATED = "[[Effective date]]"
+
 export const shippingPolicy: PolicyDocument = {
   title: "Shipping policy",
   summary: "Revara currently ships within India. Every keyboard is made to order.",

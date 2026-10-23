@@ -1,21 +1,55 @@
 import { Link } from "react-router-dom"
-import { Trash2 } from "lucide-react"
+import { ShoppingCart, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 import { Button } from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useCart } from "@/hooks/use-cart"
 import { useSavedDesigns } from "@/hooks/use-saved-designs"
+import { PageContainer } from "@/components/app/PageContainer"
+import { formatPrice } from "@/lib/catalog"
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" })
 
 export function SavedDesignsPage() {
   const { designs, removeDesign } = useSavedDesigns()
+  const { addItem } = useCart()
 
   const handleRemove = (id: string) => {
     if (!removeDesign(id)) toast.error("Could not remove this design.")
   }
 
+  const handleAddToCart = (design: (typeof designs)[number]) => {
+    const result = addItem({
+      layout: design.layout,
+      case: design.case,
+      keycaps: design.keycaps,
+      switch: design.switch,
+      price: design.price,
+      caseColor: design.caseColor,
+      keycapColor: design.keycapColor,
+    })
+    if (result === "duplicate") {
+      toast.info("This build is already in your cart")
+    } else if (result) {
+      toast.success("Added to cart")
+    } else {
+      toast.error("Could not add this build to your cart.")
+    }
+  }
+
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <PageContainer>
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="mb-2 text-sm text-muted-foreground">Your builds, kept on this device</p>
@@ -46,20 +80,47 @@ export function SavedDesignsPage() {
                 <p className="mt-1 text-xs text-muted-foreground">
                   Saved {dateFormatter.format(new Date(design.createdAt))}
                 </p>
-                <p className="mt-2 font-medium tabular-nums">₹{new Intl.NumberFormat("en-IN").format(design.price)}</p>
+                <p className="mt-2 font-medium tabular-nums">{formatPrice(design.price)}</p>
               </div>
-              <div className="flex items-center gap-2 sm:justify-end">
-                <Button variant="outline" size="sm" asChild>
-                  <Link to={`/customize/${design.layout}`}>Continue building</Link>
+              <div className="flex flex-col gap-2 sm:items-end">
+                <Button onClick={() => handleAddToCart(design)}>
+                  <ShoppingCart className="size-4" aria-hidden="true" />
+                  Add to cart
                 </Button>
-                <Button variant="ghost" size="icon" aria-label={`Delete ${design.name}`} onClick={() => handleRemove(design.id)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" asChild>
+                    <Link to={`/customize/design/${encodeURIComponent(design.id)}`}>Continue building</Link>
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon" aria-label={`Delete ${design.name}`}>
+                        <Trash2 className="size-4" aria-hidden="true" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete {design.name}?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This saved design will be removed from this device.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          variant="destructive"
+                          onClick={() => handleRemove(design.id)}
+                        >
+                          Delete design
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
             </article>
           ))}
         </div>
       )}
-    </section>
+    </PageContainer>
   )
 }

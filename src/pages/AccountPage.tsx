@@ -6,14 +6,16 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { User, MapPin, ShieldCheck } from "lucide-react"
+import { PageContainer } from "@/components/app/PageContainer"
+import { useSavedDesigns } from "@/hooks/use-saved-designs"
+import { toast } from "sonner"
 
 export function AccountPage() {
-  return (
-    <div className="flex flex-col bg-background font-body">
+  const { designs } = useSavedDesigns()
 
-      <div className="flex-1">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="font-display text-3xl font-bold tracking-tight mb-8">My account</h1>
+  return (
+    <PageContainer>
+          <h1 className="mb-8 font-display text-3xl font-bold tracking-tight">My account</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <Card className="lg:col-span-1">
@@ -39,7 +41,7 @@ export function AccountPage() {
                   <Label htmlFor="email">Email</Label>
                   <Input id="email" type="email" defaultValue="john@example.com" />
                 </div>
-                <Button>Save changes</Button>
+                <Button onClick={() => toast.info("Profile updates are not connected in this preview.")}>Save changes</Button>
               </CardContent>
             </Card>
 
@@ -52,7 +54,7 @@ export function AccountPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="line1">Address line 1</Label>
                       <Input id="line1" defaultValue="123 Keyboard Lane" />
@@ -74,7 +76,7 @@ export function AccountPage() {
                       <Input id="phone" defaultValue="+91 98765 43210" />
                     </div>
                   </div>
-                  <Button>Update address</Button>
+                  <Button onClick={() => toast.info("Address updates are not connected in this preview.")}>Update address</Button>
                 </CardContent>
               </Card>
 
@@ -103,7 +105,7 @@ export function AccountPage() {
                   </Link>
                   <Link to="/account/designs" className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
                     <span className="font-medium">Saved designs</span>
-                    <span className="text-muted-foreground text-sm">3 designs →</span>
+                    <span className="text-muted-foreground text-sm">{designs.length} {designs.length === 1 ? "design" : "designs"} →</span>
                   </Link>
                   <Link to="/support/claim" className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors">
                     <span className="font-medium">Warranty claims</span>
@@ -113,9 +115,6 @@ export function AccountPage() {
               </Card>
             </div>
           </div>
-        </section>
-      </div>
-
-    </div>
+    </PageContainer>
   )
 }

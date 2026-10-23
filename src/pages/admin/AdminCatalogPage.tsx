@@ -28,32 +28,32 @@ export function AdminCatalogPage() {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="font-display">Products</CardTitle>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search products..." className="pl-9 w-64" />
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden="true" />
+              <Input aria-label="Search products" placeholder="Search products..." className="w-full pl-9" />
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             {products.map((product) => (
-              <div key={product.id} className="flex items-center gap-4 p-4 rounded-lg border border-border">
-                <KeyboardPreview layout={product.layout} caseColor={product.caseColor} keycapColor={product.keycapColor} className="w-32 h-24" />
+              <div key={product.id} className="flex min-w-0 flex-col gap-4 rounded-lg border border-border p-4 sm:flex-row sm:items-center">
+                <KeyboardPreview layout={product.layout} caseColor={product.caseColor} keycapColor={product.keycapColor} className="w-full max-w-60 self-center sm:w-32 sm:self-auto" />
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <h3 className="font-medium">{product.name}</h3>
                     <Badge variant={product.active ? "success" : "secondary"}>{product.active ? "Active" : "Inactive"}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">SKU: {product.id} · {product.layout}% layout</p>
                 </div>
-                <div className="text-right mr-4">
+                <div className="flex items-center justify-between gap-3 sm:mr-4 sm:block sm:text-right">
                   <p className="font-medium tabular-nums">{formatPrice(product.price)}</p>
                   <p className={`text-xs ${product.stock === 0 ? "text-destructive" : "text-muted-foreground"}`}>{product.stock} in stock</p>
                 </div>
-                <Button variant="ghost" size="icon">
-                  <Edit className="h-4 w-4" />
+                <Button variant="ghost" size="icon" aria-label={`Edit ${product.name}`}>
+                  <Edit className="size-4" aria-hidden="true" />
                 </Button>
               </div>
             ))}

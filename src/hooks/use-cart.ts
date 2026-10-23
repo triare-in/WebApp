@@ -79,7 +79,7 @@ export function useCart() {
   }, [])
 
   const addItem = useCallback((item: NewCartItem) => {
-    if (items.some((existing) => sameBuild(item, existing))) return true
+    if (items.some((existing) => sameBuild(item, existing))) return "duplicate" as const
     const added: CartItem = { ...item, id: crypto.randomUUID() }
     return commit([...items, added])
   }, [commit, items])

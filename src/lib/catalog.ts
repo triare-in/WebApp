@@ -41,6 +41,7 @@ export const KEYBOARD_PRESETS = [
     name: "75% Lilac Aluminium",
     layout: "75",
     case: "Aluminium",
+    switch: "Linear",
     caseColor: "#B9A6E8",
     keycapColor: "#F3EEE3",
     badge: "Best seller",
@@ -50,6 +51,7 @@ export const KEYBOARD_PRESETS = [
     name: "65% Sakura Polycarbonate",
     layout: "65",
     case: "Polycarbonate",
+    switch: "Linear",
     caseColor: "#F4C9DA",
     keycapColor: "#F3EEE3",
   },
@@ -58,6 +60,7 @@ export const KEYBOARD_PRESETS = [
     name: "100% Ivory Polycarbonate",
     layout: "100",
     case: "Polycarbonate",
+    switch: "Linear",
     caseColor: "#F3EEE3",
     keycapColor: "#B9A6E8",
   },
@@ -66,6 +69,7 @@ export const KEYBOARD_PRESETS = [
   name: string
   layout: Layout
   case: "Aluminium" | "Polycarbonate"
+  switch: "Linear"
   caseColor: string
   keycapColor: string
   badge?: string

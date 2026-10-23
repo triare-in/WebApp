@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import {
   Shield,
-  Folder,
-  MousePointer,
+  FileText,
+  Wrench,
   ChevronRight,
 } from "lucide-react"
-import { KeyboardPreview } from "@/components/app/KeyboardPreview"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { Field } from "@/components/app/Field"
+import { PageContainer } from "@/components/app/PageContainer"
 
 const faqItems = [
   {
@@ -54,73 +54,56 @@ const supportCards = [
       "1-year warranty on selected products. Manufacturing defects covered. Free replacement parts with genuine proof.",
     icon: Shield,
     href: "/policies/warranty",
-    bg: "bg-primary/10",
   },
   {
-    title: "Parts plan",
+    title: "Raise a claim",
     description:
-      "Buy replacement parts (sockets, switches, keycaps, battery) separately when you need them.",
-    icon: Folder,
-    href: "/repairability",
-    bg: "bg-secondary",
+      "Tell us what happened and include proof so your claim can be reviewed.",
+    icon: FileText,
+    href: "/support/claim",
   },
   {
     title: "Repairs",
     description:
       "Open the case with the included tool and swap any part. No glue, no soldering required.",
-    icon: MousePointer,
+    icon: Wrench,
     href: "/repairability",
-    bg: "bg-accent",
   },
 ]
+
+const contactDetails: { label: string; value: string }[] = []
+// TODO(launch): Add verified support contact details.
 
 export function SupportPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <div className="flex flex-col lg:flex-row items-center gap-8">
-          <div className="flex-1 lg:w-1/2">
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-              Support
-            </h1>
-            <p className="text-lg text-muted-foreground mt-4 max-w-xl">
-              Need help? We're here for you.
-            </p>
-          </div>
-          <div className="flex-1 lg:w-1/2 flex items-center justify-center">
-            <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full rounded-2xl bg-muted p-4" />
-            <p className="mt-3 text-xs text-muted-foreground text-center">
-              Preview is illustrative. Final product may vary slightly.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageContainer as="section" className="py-10">
+        <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">Support</h1>
+        <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+          Need help with an order, repair, or keyboard setup? Browse the answers or contact us below.
+        </p>
+      </PageContainer>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <h2 className="font-display text-3xl font-bold tracking-tight mb-8">Frequently asked questions</h2>
         <Accordion type="single" collapsible>
           {faqItems.map((faq, index) => (
             <AccordionItem key={index} value={`faq-${index}`} className="border-b">
-              <AccordionTrigger>
-                <span className="flex items-center justify-between w-full">
-                  <span className="font-display font-medium text-primary cursor-pointer">
-                    {faq.question}
-                  </span>
-                  <ChevronRight className="h-4 w-4 opacity-60 transition-transform" />
-                </span>
+              <AccordionTrigger className="text-foreground">
+                {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="pt-2 line-clamp-3">
+              <AccordionContent className="pt-2">
                 <p className="text-muted-foreground">{faq.answer}</p>
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
+      </PageContainer>
 
       {/* Support links */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="divide-y divide-border border-y border-border">
           {supportCards.map((card, index) => (
             <Link key={card.title} to={card.href} className="group flex items-start gap-4 py-5 hover:bg-accent/30 sm:gap-6 sm:px-3">
@@ -134,10 +117,22 @@ export function SupportPage() {
             </Link>
           ))}
         </div>
-      </section>
+      </PageContainer>
+
+      <PageContainer as="section" className="py-10">
+        <h2 className="font-display text-2xl font-semibold">Contact details</h2>
+        <dl className="mt-4 space-y-2">
+          {contactDetails.map((detail) => (
+            <div key={detail.label} className="flex flex-wrap gap-2 text-sm">
+              <dt className="font-medium">{detail.label}</dt>
+              <dd className="text-muted-foreground">{detail.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </PageContainer>
 
       {/* Contact form */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <PageContainer as="section" className="py-16">
         <div className="border-y border-border py-8 lg:py-12">
             <h2 className="font-display text-3xl font-bold tracking-tight mb-6">Contact us</h2>
             <p className="text-muted-foreground text-lg mb-6">
@@ -147,28 +142,24 @@ export function SupportPage() {
               event.preventDefault()
               toast.info("The contact form is not connected in this preview.")
             }}>
-              <div>
-                <Label htmlFor="support-name">Name</Label>
+              <Field id="support-name" label="Name">
                 <Input id="support-name" name="name" autoComplete="name" placeholder="Your name" required />
-              </div>
-              <div>
-                <Label htmlFor="support-email">Email</Label>
+              </Field>
+              <Field id="support-email" label="Email">
                 <Input id="support-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
-              </div>
-              <div>
-                <Label htmlFor="support-subject">Subject</Label>
+              </Field>
+              <Field id="support-subject" label="Subject">
                 <Input id="support-subject" name="subject" placeholder="Subject" />
-              </div>
-              <div>
-                <Label htmlFor="support-message">Message</Label>
+              </Field>
+              <Field id="support-message" label="Message">
                 <Textarea id="support-message" name="message" rows={4} placeholder="Describe your issue or question..." required />
-              </div>
+              </Field>
               <Button type="submit" className="w-full h-12 px-4">
                 Send message
               </Button>
             </form>
         </div>
-      </section>
+      </PageContainer>
     </div>
   )
 }

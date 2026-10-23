@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Search, Eye } from "lucide-react"
+import { Search, Eye, User } from "lucide-react"
 
 const customers = [
   { id: "C-001", name: "John Doe", email: "john@example.com", orders: 3, total: "₹34,249", joined: "Aug 2026", verified: true },
@@ -18,35 +18,35 @@ export function AdminCustomersPage() {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="font-display">All customers</CardTitle>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search customers..." className="pl-9 w-64" />
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden="true" />
+              <Input aria-label="Search customers" placeholder="Search customers..." className="w-full pl-9" />
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {customers.map((customer) => (
-              <div key={customer.id} className="flex items-center justify-between p-4 rounded-lg border border-border">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span className="text-sm font-medium">{customer.name.split(" ").map(n => n[0]).join("")}</span>
+              <div key={customer.id} className="flex flex-col gap-4 rounded-lg border border-border p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-4">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted">
+                    <User className="size-5 text-muted-foreground" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="font-medium">{customer.name}</p>
-                    <p className="text-sm text-muted-foreground">{customer.email}</p>
+                    <p className="break-all text-sm text-muted-foreground">{customer.email}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right">
                   <p className="text-sm font-medium">{customer.orders} orders · {customer.total}</p>
                   <p className="text-xs text-muted-foreground">Joined {customer.joined}</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 self-end sm:self-auto">
                   {customer.verified && <Badge variant="success">Verified</Badge>}
-                  <Button variant="ghost" size="icon">
-                    <Eye className="h-4 w-4" />
+                  <Button variant="ghost" size="icon" aria-label={`View ${customer.name}`}>
+                    <Eye className="size-4" aria-hidden="true" />
                   </Button>
                 </div>
               </div>

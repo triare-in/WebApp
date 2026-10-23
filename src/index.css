@@ -33,11 +33,20 @@
   --color-destructive-soft: var(--destructive-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
+  --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --color-sakura: var(--sakura);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 
   --shadow-xs: var(--shadow-xs-value);
   --shadow-sm: var(--shadow-sm-value);
@@ -47,7 +56,8 @@
   --font-body: var(--font-body-stack);
   --font-mono: var(--font-mono-stack);
 
-  --radius-lg: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 }
@@ -75,12 +85,21 @@
   --destructive: #B3263E;
   --destructive-soft: #FBE9EC;
   --success: #2F7D5B;
+  --success-foreground: #FFFFFF;
   --success-soft: #E6F4EC;
   --warning: #8A5A00;
   --warning-soft: #FFF3D6;
   --info: #3A62B8;
   --info-soft: #E7EEFB;
   --sakura: #F4C9DA;
+  --sidebar: #F1EDF8;
+  --sidebar-foreground: #2A2233;
+  --sidebar-primary: #6B4FBB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EDE6F9;
+  --sidebar-accent-foreground: #3F2F73;
+  --sidebar-border: #E4DDF0;
+  --sidebar-ring: #8466D1;
 
   --shadow-xs-value: 0 1px 2px rgb(60 40 110 / 0.06);
   --shadow-sm-value: 0 2px 8px rgb(60 40 110 / 0.08);
@@ -115,12 +134,21 @@
   --destructive: #F27A8D;
   --destructive-soft: #3A1B25;
   --success: #6CCB9D;
+  --success-foreground: #17131F;
   --success-soft: #173226;
   --warning: #E8B04A;
   --warning-soft: #3A2D12;
   --info: #8FB0F0;
   --info-soft: #1B2740;
   --sakura: #5A3347;
+  --sidebar: #1F1A2A;
+  --sidebar-foreground: #F1ECF8;
+  --sidebar-primary: #A58BF0;
+  --sidebar-primary-foreground: #17131F;
+  --sidebar-accent: #322A47;
+  --sidebar-accent-foreground: #E4DBFA;
+  --sidebar-border: #332B45;
+  --sidebar-ring: #A58BF0;
   color-scheme: dark;
 }
 
@@ -141,6 +169,10 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  html,
+  body {
+    font-family: var(--font-body-stack);
   }
   /* tabular-nums on every price */
   .tabular-nums {

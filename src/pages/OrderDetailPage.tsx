@@ -1,11 +1,11 @@
-
 import { Link, useParams } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { Check } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { KeyboardPreview } from "@/components/app/KeyboardPreview"
+import { PageContainer } from "@/components/app/PageContainer"
+import { Badge } from "@/components/ui/badge"
+import { OrderStatusBadge } from "@/components/app/OrderStatusBadge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 const statusSteps = [
   { label: "Placed", completed: true },
@@ -17,124 +17,134 @@ const statusSteps = [
 
 export function OrderDetailPage() {
   const { id } = useParams<{ id: string }>()
+  const orderId = id ?? "Unknown"
+  const isDelivered = orderId === "RVR-0977"
+  const currentStep = isDelivered ? statusSteps.length - 1 : statusSteps.findIndex((step) => step.current)
+  const orderDate = isDelivered ? "28 Aug 2026" : "12 Oct 2026"
 
   return (
-    <div className="flex flex-col bg-background font-body">
+    <PageContainer>
+      <Link to="/orders" className="mb-5 inline-flex text-sm text-primary underline-offset-4 hover:underline">
+        Back to orders
+      </Link>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Order {orderId}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{orderDate}</p>
+        </div>
+        <OrderStatusBadge status={isDelivered ? "Delivered" : "Building"} />
+      </div>
 
-      <div className="flex-1">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="font-display text-2xl font-bold tracking-tight">Order {id}</h1>
-              <p className="text-muted-foreground text-sm mt-1">12 Oct 2026</p>
-            </div>
-            <Badge variant="warning" className="text-sm">Building</Badge>
-          </div>
-
-          {/* Status stepper */}
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                {statusSteps.map((step, index) => (
-                  <div key={step.label} className="flex items-center flex-1">
-                    <div className="flex items-center gap-2">
-                      <div className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium",
-                        step.completed ? "bg-success text-white" :
-                        step.current ? "bg-primary text-primary-foreground" :
-                        "bg-muted text-muted-foreground"
-                      )}>
-                        {step.completed ? <Check className="h-4 w-4" /> : index + 1}
-                      </div>
-                      <span className={cn(
-                        "text-sm font-medium hidden sm:block",
-                        step.completed ? "text-success" :
-                        step.current ? "text-primary" :
-                        "text-muted-foreground"
-                      )}>
-                        {step.label}
-                      </span>
-                    </div>
-                    {index < statusSteps.length - 1 && (
-                      <div className={cn(
-                        "flex-1 h-0.5 mx-2",
-                        step.completed ? "bg-success" : "bg-muted"
-                      )} />
+      <Card className="mb-8">
+        <CardContent className="p-6">
+          <ol aria-label="Order progress" className="flex items-center">
+            {statusSteps.map((step, index) => {
+              const completed = isDelivered ? index < currentStep : step.completed
+              const current = isDelivered ? index === currentStep : step.current
+              return (
+              <li key={step.label} className="flex min-w-0 flex-1 items-center">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span
+                    className={cn(
+                      "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-medium",
+                      completed ? "bg-success text-success-foreground" :
+                        current ? "bg-primary text-primary-foreground" :
+                          "bg-muted text-muted-foreground"
                     )}
-                  </div>
-                ))}
+                    aria-current={current ? "step" : undefined}
+                  >
+                    {completed ? <Check className="size-4" aria-hidden="true" /> : index + 1}
+                  </span>
+                  <span className={cn(
+                    "hidden truncate text-sm font-medium sm:block",
+                    completed ? "text-success" : current ? "text-primary" : "text-muted-foreground"
+                  )}>
+                    {step.label}
+                  </span>
+                </div>
+                {index < statusSteps.length - 1 && (
+                  <span className={cn("mx-2 h-0.5 min-w-2 flex-1", completed ? "bg-success" : "bg-border")} aria-hidden="true" />
+                )}
+              </li>
+              )
+            })}
+          </ol>
+          <p className="mt-4 text-sm font-medium sm:hidden">
+            Step {currentStep + 1} of {statusSteps.length}: {statusSteps[currentStep]?.label}
+          </p>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <Card>
+          <CardHeader><CardTitle className="font-display">Items</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex min-w-0 items-start gap-4 rounded-lg border border-border p-4">
+              <div className="w-28 shrink-0 rounded-lg bg-muted p-2">
+                <KeyboardPreview
+                  layout="75"
+                  caseColor="#B9A6E8"
+                  keycapColor="#F3EEE3"
+                  caseName="Lilac"
+                  keycapName="Ivory"
+                />
               </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-display font-medium">75% Lilac Aluminium</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Aluminium case · Lilac · Ivory keycaps · Bluetooth wireless</p>
+                <p className="mt-2 text-sm font-medium tabular-nums">₹12,499</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader><CardTitle className="font-display">Shipping address</CardTitle></CardHeader>
+            <CardContent>
+              <address className="space-y-1 text-sm not-italic text-muted-foreground">
+                <p>John Doe</p>
+                <p>123 Keyboard Lane</p>
+                <p>Bangalore, Karnataka 560001</p>
+                <p>India</p>
+                <p className="pt-2">+91 98765 43210</p>
+              </address>
             </CardContent>
           </Card>
 
-          {/* Order details grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Items */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-display">Items</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start gap-4 p-4 rounded-lg border border-border">
-                  <div className="w-20 h-20 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                    <KeyboardPreview layout="75" caseColor="#B9A6E8" keycapColor="#F3EEE3" className="w-full h-full" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-display font-medium">75% Lilac Aluminium</h3>
-                    <p className="text-sm text-muted-foreground">Aluminium case · Lilac · Ivory keycaps · Bluetooth wireless</p>
-                    <p className="text-sm font-medium tabular-nums mt-2">₹12,499</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader><CardTitle className="font-display">Payment</CardTitle></CardHeader>
+            <CardContent className="space-y-3 text-sm">
+              <dl className="space-y-3">
+                <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Subtotal</dt><dd className="tabular-nums">₹12,499</dd></div>
+                <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Shipping</dt><dd className="tabular-nums">₹150</dd></div>
+                <div className="flex justify-between gap-4"><dt className="text-muted-foreground">Discount</dt><dd className="tabular-nums">₹0</dd></div>
+                <div className="flex justify-between gap-4 border-t border-border pt-3 font-semibold"><dt>Total</dt><dd className="tabular-nums text-primary">₹12,649</dd></div>
+              </dl>
+              <p className="text-muted-foreground">Paid via Razorpay (Credit Card)</p>
+            </CardContent>
+          </Card>
 
-            {/* Shipping & Payment */}
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-display">Shipping address</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <address className="not-italic text-sm text-muted-foreground space-y-1">
-                    <p>John Doe</p>
-                    <p>123 Keyboard Lane</p>
-                    <p>Bangalore, Karnataka 560001</p>
-                    <p>India</p>
-                    <p className="mt-2">+91 98765 43210</p>
-                  </address>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-display">Payment</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2 text-sm">
-                  <p><span className="font-medium">Subtotal:</span> <span className="tabular-nums">₹12,499</span></p>
-                  <p><span className="font-medium">Shipping:</span> <span className="tabular-nums">₹150</span></p>
-                  <p><span className="font-medium">Discount:</span> <span className="tabular-nums">₹0</span></p>
-                  <Separator />
-                  <p className="font-medium"><span className="font-medium">Total:</span> <span className="tabular-nums text-primary">₹12,649</span></p>
-                  <p className="text-muted-foreground">Paid via Razorpay (Credit Card)</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-display">Warranty</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant="success" className="text-sm mb-2">Active until 12 Oct 2027</Badge>
-                  <p className="text-sm text-muted-foreground">
-                    1-year warranty on this product. <Link to="/support/claim" className="text-primary underline">Raise a claim</Link> if needed.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
+          <Card>
+            <CardHeader><CardTitle className="font-display">Warranty</CardTitle></CardHeader>
+            <CardContent>
+              {isDelivered ? (
+                <Badge variant="success" className="mb-2">Active until 28 Aug 2027</Badge>
+              ) : (
+                <Badge variant="outline" className="mb-2">Starts on delivery</Badge>
+              )}
+              <p className="text-sm text-muted-foreground">
+                12-month warranty coverage begins on delivery.{" "}
+                <Link to={`/support/claim?order=${encodeURIComponent(orderId)}`} className="text-primary underline underline-offset-4">
+                  Raise a claim
+                </Link>{" "}
+                if needed.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-
-    </div>
+      <p className="mt-8 text-sm text-muted-foreground">Custom-built keyboards can&apos;t be returned or exchanged.</p>
+    </PageContainer>
   )
 }
